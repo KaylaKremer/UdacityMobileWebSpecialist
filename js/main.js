@@ -155,7 +155,13 @@ createRestaurantHTML = (restaurant) => {
   address.innerHTML = restaurant.address;
   li.append(address);
 
-  const more = document.createElement('a');
+  //Create empty element so flex grow can be applied and create space to vertically align View Details buttons.
+  const empty = document.createElement('p');
+  empty.className = 'restaurant-empty';
+  li.append(empty);
+
+  //Change creating just a link to a button element
+  const more = document.createElement('button');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
   li.append(more)
