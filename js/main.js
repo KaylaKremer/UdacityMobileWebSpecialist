@@ -160,13 +160,12 @@ createRestaurantHTML = (restaurant) => {
   empty.className = 'restaurant-empty';
   li.append(empty);
 
-  //Change creating just a link to a button element
-  const more = document.createElement('button');
+  const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  li.append(more)
+  li.append(more);
 
-  return li
+  return li;
 }
 
 /**
