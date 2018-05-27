@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* CSS Document */
 
-* {
+*, ::before, ::after {
   box-sizing: border-box;
 }
 
@@ -77,7 +77,7 @@ nav h1 {
 }
 nav h1 a {
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 200;
   letter-spacing: 0.5rem;
   text-transform: uppercase;
@@ -117,7 +117,7 @@ nav h1 a {
 }
 /* ====================== Map ====================== */
 #map {
-  height: 50vh;
+  height: 300px;
   width: 100%;
   background-color: #ccc;
 }
@@ -153,6 +153,7 @@ nav h1 a {
 }
 
 /* ====================== Restaurant Listing ====================== */
+
 #restaurants-list {
   background-color: #f3f3f3;
   list-style: outside none none;
@@ -168,10 +169,11 @@ nav h1 a {
   background-color: #fff;
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
-  margin: 1rem;
+  margin: 1rem 2rem;
   padding: 0 1rem 1rem;
   text-align: left;
   min-width: 300px;
+  max-width: 500px;
   flex: 1 1 300px;
   display: flex;
   flex-direction: column;
@@ -230,15 +232,13 @@ nav h1 a {
 }
 .inside #map-container {
   background: blue none repeat scroll 0 0;
-  height: 50vh;
   width: 100%;
   min-width: 300px;
   margin-top: 9.5rem;
 }
 .inside #map {
   background-color: #ccc;
-  height: 100%;
-  width: 100%;
+  height: 50vh;
 }
 .inside #footer {
   bottom: 0;
@@ -314,25 +314,29 @@ nav h1 a {
   flex-wrap: wrap;
   justify-content: center;
 }
+
 #reviews-list li {
   background-color: #fff;
   border: 2px solid #ccc;
   text-align: left;
   font-family: Arial,sans-serif;
-  display: block;
+  font-size: 1rem;
   list-style-type: none;
-  margin: 0 0 2rem 0;
+  margin: 0 1rem 2rem 1rem;
   overflow: hidden;
   padding: 1rem;
-  position: relative;
   width: 100%;
   min-width: 300px;
-  font-size: 1rem;
+  min-height: 300px;
   flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
 }
+
 #reviews-list li:last-child {
-  margin: 0 0 4rem 0;
+  margin: 0 1rem 4rem 1rem;
 }
+
 #reviews-list li p {
   margin: 0 0 0.8rem;
 }
@@ -352,6 +356,148 @@ nav h1 a {
 
 /* ====================== Media Queries ====================== */
 
-@media screen and (min-width: 455px) {
+@media screen and (max-width: 462px) {
+
+  nav h1 a {
+    font-size: 1rem;
+  }
+
+  #restaurants-list li h1 {
+    font-size: 1.25rem;
+  }
+
+  #restaurants-list p {
+    font-size: .9rem;
+  }
+
+  #restaurants-list li a {
+    padding: 3% 10%;
+  }
+
+  #restaurants-list .restaurant-img {
+    min-height: 124px;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  #restaurants-list li h1 {
+    font-size: 1.75rem;
+  }
+  #restaurants-list p {
+    font-size: 1.2rem;
+  }
+
+  #restaurants-list li a {
+    font-size: 1.2rem;
+  }
 
 }
+
+@media screen and (min-width: 650px) {
+
+  #restaurants-list li h1 {
+    font-size: 1.9rem;
+  }
+
+  #restaurants-list p {
+    font-size: 1.25rem;
+  }
+
+  #restaurants-list li a {
+    font-size: 1.3rem;
+  }
+
+  #map{
+    height: 400px;
+  }
+
+  .filter-options h2 {
+    font-size: 1.75rem;
+  }
+
+  .filter-options select {
+    font-size: 1.25rem;
+    height: 45px;
+  }
+
+  nav h1 a {
+    font-size: 2rem;
+  }
+
+  #footer {
+    font-size: 1rem;
+  }
+
+}
+
+@media screen and (min-width: 791px) {
+  #restaurants-list li {
+    margin: 1rem 0.5rem;
+  }
+
+  #restaurants-list li h1 {
+    font-size: 1.5rem;
+  }
+
+  #restaurants-list p {
+    font-size: 1rem;
+  }
+
+  #restaurants-list li a {
+    font-size: 1.1rem;
+  }
+
+}
+
+@media screen and (min-width: 850px) {
+
+  #restaurants-list li h1 {
+    font-size: 1.75rem;
+  }
+
+  #restaurants-list p {
+    font-size: 1.25rem;
+  }
+
+  #restaurants-list li a {
+    font-size: 1.3rem;
+  }
+
+}
+
+@media screen and (min-width: 1011px) {
+
+  #restaurants-list li {
+  min-width: 350px;
+  max-width: 500px;
+  }
+
+}
+
+@media screen and (min-width: 1161px) {
+
+  #restaurants-list li {
+    min-width: 350px;
+    max-width: 350px;
+  }
+
+  #restaurants-list .restaurant-img {
+    min-height: 124px;
+  }
+
+  #restaurants-list::after {
+    content: "";
+    flex: 1 1 700px;
+    max-width: 700px;
+    margin-right: 2rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #maincontent {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
