@@ -146,11 +146,18 @@ class DBHelper {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
 
-  /**
-   * Restaurant image URL.
+    /**
+   * Restaurant small image URL.
    */
-  static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+  static smallImageUrlForRestaurant(restaurant) {
+    return (`/img/${restaurant.photograph_small}`);
+  }
+
+  /**
+   * Restaurant large image URL.
+   */
+  static largeImageUrlForRestaurant(restaurant) {
+    return (`/img/${restaurant.photograph_large}`);
   }
 
   /**
