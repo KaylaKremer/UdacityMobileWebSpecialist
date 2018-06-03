@@ -22,7 +22,7 @@ ul, li {
 	color: #333;
 }
 a {
-	color: orange;
+	color: #f18200;
 	text-decoration: none;
 }
 a:hover, a:focus {
@@ -75,6 +75,14 @@ label {
   margin-right: auto;
 }
 
+figure {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  padding: 0;
+  justify-content: center;
+}
+
 .js-focus-visible :focus:not(.focus-visible) {
   outline: none;
 }
@@ -116,8 +124,6 @@ nav h1 a {
   text-transform: uppercase;
 }
 
-
-
 #breadcrumb {
     list-style: none;
     background-color: #eee;
@@ -143,15 +149,10 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
-    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-/* Add a color on mouse-over */
-#breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
-}
 /* ====================== Map ====================== */
 #map {
   height: 300px;
@@ -239,7 +240,7 @@ nav h1 a {
   min-height: 248px;
   min-width: 100%;
 }
-#restaurants-list li h1 {
+#restaurants-list li h3 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 1.5rem;
@@ -267,7 +268,7 @@ nav h1 a {
   vertical-align: bottom;
   font-size: 1rem;
   margin: 5% 0 0 0;
-  padding: 5% 10%;
+  padding: 5%;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -432,7 +433,7 @@ nav h1 a {
     font-size: 1rem;
   }
 
-  #restaurants-list li h1 {
+  #restaurants-list li h3 {
     font-size: 1.25rem;
   }
 
@@ -442,6 +443,7 @@ nav h1 a {
 
   #restaurants-list li a {
     padding: 3% 10%;
+    font-size: 0.8rem;
   }
 
   #restaurants-list .restaurant-img {
@@ -475,7 +477,7 @@ nav h1 a {
 
 @media screen and (min-width: 650px) {
 
-  #restaurants-list li h1 {
+  #restaurants-list li h3 {
     font-size: 1.8rem;
   }
 
@@ -556,7 +558,7 @@ nav h1 a {
     margin: 1rem 0.5rem;
   }
 
-  #restaurants-list li h1 {
+  #restaurants-list li h3 {
     font-size: 1.5rem;
   }
 
@@ -570,9 +572,9 @@ nav h1 a {
 
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (min-width: 875px) {
 
-  #restaurants-list li h1 {
+  #restaurants-list li h3 {
     font-size: 1.75rem;
   }
 

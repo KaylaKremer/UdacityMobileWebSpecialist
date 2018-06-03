@@ -10,7 +10,7 @@
 
 <body>
   <header>
-    <a href="#neighborhoods-select" class="skip-link">Skip to main content</a>
+    <a href="#filter-options" class="skip-link">Skip to main content</a>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
@@ -22,10 +22,10 @@
       </div>
     </section>
     <section>
-      <div class="filter-options">
+      <div class="filter-options" id="filter-options">
         <h2>Filter Results</h2>
         <div class="select-container">
-          <label for="neighborhoods-select" tabindex="-1">Select Neighborhood</label>
+          <label for="neighborhoods-select">Select Neighborhood</label>
           <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>

@@ -144,10 +144,11 @@ createRestaurantHTML = (restaurant) => {
   image.src = DBHelper.largeImageUrlForRestaurant(restaurant);
   image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
   image.sizes = '50vw';
+  image.title = `${restaurant.name}`;
   image.alt = `${restaurant.name} in ${restaurant.neighborhood} - ${restaurant.cuisine_type} restaurant`;
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
   li.append(name);
 
@@ -165,7 +166,7 @@ createRestaurantHTML = (restaurant) => {
   li.append(empty);
 
   const more = document.createElement('a');
-  more.innerHTML = 'View Details';
+  more.innerHTML = 'View Restaurant Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
   more.role = 'button';
   more.tabindex = '0';
