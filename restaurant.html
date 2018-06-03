@@ -13,7 +13,7 @@
 <body class="inside">
   <!-- Beginning header -->
   <header>
-    <a href="#maincontent" class="skip-link">Skip to main content</a>
+    <a href="#restaurant-container" class="skip-link">Skip to main content</a>
     <!-- Beginning nav -->
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
@@ -28,14 +28,14 @@
   <!-- End header -->
 
   <!-- Beginning main -->
-  <main id="maincontent" tabindex="-1">
+  <main>
     <!-- Beginning map -->
     <section id="map-container">
       <div id="map"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
-    <section id="restaurant-container">
+    <section id="restaurant-container" tabindex="-1">
       <h1 id="restaurant-name"></h1>
       <img id="restaurant-img" alt="">
       <p id="restaurant-cuisine"></p>
@@ -64,6 +64,8 @@
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
+  <!-- :focus-visible polyfill -->
+  <script src="/node_modules/focus-visible/dist/focus-visible.min.js"></script>
   <!-- End scripts -->
 
 </body>

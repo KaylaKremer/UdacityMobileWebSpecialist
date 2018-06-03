@@ -27,7 +27,7 @@ a {
 }
 a:hover, a:focus {
 	color: #3397db;
-	text-decoration: none;
+	text-decoration: underline;
 }
 a img{
 	border: none 0px #fff;
@@ -44,7 +44,7 @@ img, embed, object, video {
   max-width: 100%;
 }
 
-#maincontent {
+main {
   background-color: #f3f3f3;
   min-height: 100%;
   min-width: 300px;
@@ -75,12 +75,16 @@ label {
   margin-right: auto;
 }
 
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
 /* ====================== Navigation ====================== */
 .skip-link {
   position: absolute;
   top: -50px;
   left: 0;
-  background: #f18200;
+  background-color: #f18200;
   color: #fff;
   padding: 0.25rem;
   z-index: 100;
@@ -89,6 +93,8 @@ label {
 .skip-link:focus {
   top: 0;
   color: #fff;
+  background-color: #3397DB;
+  text-decoration: underline;
 }
 
 nav {
@@ -109,6 +115,9 @@ nav h1 a {
   letter-spacing: 0.5rem;
   text-transform: uppercase;
 }
+
+
+
 #breadcrumb {
     list-style: none;
     background-color: #eee;
@@ -181,6 +190,13 @@ nav h1 a {
   min-width: 200px;
 }
 
+.filter-options h2:focus,
+.filter-options select:focus {
+  outline: 0;
+  box-shadow: 0 0 1px 3px rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+}
+
 .select-container {
   display: flex;
   flex-wrap: wrap;
@@ -244,7 +260,7 @@ nav h1 a {
 }
 
 #restaurants-list li a {
-  background-color: orange;
+  background-color: #f18200;
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
@@ -256,8 +272,14 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
   align-self: flex-start;
-  
 }
+
+#restaurants-list li a:hover,
+#restaurants-list li a:focus{
+  background-color: #3397DB;
+  text-decoration: underline;
+}
+
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -603,7 +625,7 @@ nav h1 a {
 }
 
 @media screen and (min-width: 1200px) {
-  #maincontent,
+  main,
   .inside,
   .inside header {
     width: 1200px;

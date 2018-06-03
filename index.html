@@ -10,21 +10,22 @@
 
 <body>
   <header>
-    <a href="#maincontent" class="skip-link">Skip to main content</a>
+    <a href="#neighborhoods-select" class="skip-link">Skip to main content</a>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
-  <main id="maincontent" tabindex="-1">
+  <main>
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map"> 
+      </div>
     </section>
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
         <div class="select-container">
-          <label for="neighborhoods-select">Select Neighborhood</label>
+          <label for="neighborhoods-select" tabindex="-1">Select Neighborhood</label>
           <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>
@@ -34,13 +35,16 @@
           </select>
         </div>
       </div>
-      <ul id="restaurants-list"></ul>
+      <ul id="restaurants-list"> 
+      </ul>
     </section>
   </main>
 
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
+  <!-- :focus-visible polyfill -->
+  <script src="/node_modules/focus-visible/dist/focus-visible.min.js"></script>
 
 
   <footer>
