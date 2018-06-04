@@ -9,25 +9,24 @@
 </head>
 
 <body>
-  <a href="#filter-results" class="skip-button" role="button" tabindex="0">Skip to main content</a>
-  <header>
-    <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+  <header role="banner">
+    <a href="#filter-results" class="skip-button" role="button" tabindex="0" title="Skip to Main Content">Skip to Main Content</a>
+    <nav role="navigation">
+      <h1><a href="/" title="Restaurant Reviews">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
-  <main>
+  <main role="main">
     <section id="map-container">
-      <div id="map"> 
-      </div>
+      <div id="map"></div>
     </section> 
     <section>
       <div class="filter-options" id="filter-options">
-        <h2 id="filter-results" tabindex="0">Filter Results</h2>
+        <h2 id="filter-results">Filter Results</h2>
         <p id="filter-description">To filter restaurant results, select desired neighborhood and cuisine options.</p>
         <div class="select-container" id="select-container" role="group" aria-label="Select Options" aria-describedby="filter-description" tabindex="0">
           <label for="neighborhoods-select">Select Neighborhood</label>
-          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" >
+          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>
           <label for="cuisines-select">Select Cuisine</label>
@@ -45,8 +44,8 @@
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
 
-  <footer id="copyright-description">
-    Copyright (c) 2017 <a href="/" aria-describedby="copyright-description"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+  <footer id="copyright" role="contentinfo">
+    Copyright (c) 2017 <a href="/" aria-describedby="copyright" title="Restaurant Reviews"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
 </body>

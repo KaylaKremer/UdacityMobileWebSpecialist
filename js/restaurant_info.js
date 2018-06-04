@@ -55,7 +55,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
-  // Loads small or large version of restaurant image based on srcset and sizes. Also dynamically sets alt text of the image. 
+  // Loads small or large version of restaurant image based on srcset and sizes. Also dynamically sets alt and title text of the image. 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.largeImageUrlForRestaurant(restaurant);
@@ -148,6 +148,12 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  //Set ARIA attributes so screenreader knows its on the current page for the restaurant in the breadcrumb trail.
+  li.setAttribute('aria-label', restaurant.name)
+  li.setAttribute('aria-describedby', 'breadcrumb-description');
+  li.setAttribute('tabindex', '0');
+  //Dynamically set title attribute
+  li.title = restaurant.name;
   breadcrumb.appendChild(li);
 }
 

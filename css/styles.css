@@ -61,6 +61,7 @@ footer {
   text-align: center;
   text-transform: uppercase;
   width: 100%;
+  min-width: 300px;
 }
 
 label {
@@ -102,6 +103,7 @@ figure {
 
 nav {
   width: 100%;
+  min-width: 300px;
   background-color: #000;
   text-align:center;
   display: flex;
@@ -199,7 +201,8 @@ nav h1 a:hover {
   border-radius: 2px;
 }
 
-p#filter-description {
+p#filter-description,
+p#breadcrumb-description {
   display: none;
 }
 
@@ -288,12 +291,16 @@ p#filter-description {
 
 
 /* ====================== Restaurant Details ====================== */
-.inside header {
+/*.inside header {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
+}*/
+
+.inside header {
+  height: 0;
 }
 .inside #map-container {
   background: blue none repeat scroll 0 0;

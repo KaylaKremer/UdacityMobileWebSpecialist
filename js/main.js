@@ -1,8 +1,8 @@
 let restaurants,
   neighborhoods,
-  cuisines
-var map
-var markers = []
+  cuisines;
+var map;
+var markers = [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -137,8 +137,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
-
-  // Loads small or large version of restaurant image based on srcset and sizes. Also dynamically sets alt text of the image. 
+  // Loads small or large version of restaurant image based on srcset and sizes. Also dynamically sets alt and title text of the image. 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.largeImageUrlForRestaurant(restaurant);
@@ -168,6 +167,9 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Restaurant Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  //Dynamically set title attribute
+  more.title = `${restaurant.name} - View Restaurant Details`;
+  //Set ARIA attributes to each restaurant link
   more.setAttribute('role', 'button');
   more.setAttribute('tabindex', '0');
   more.setAttribute('aria-label', 'View' + restaurant.name + 'Restaurant Details');
