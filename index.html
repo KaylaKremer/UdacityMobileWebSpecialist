@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,8 +9,8 @@
 </head>
 
 <body>
+  <a href="#filter-results" class="skip-button" role="button" tabindex="0">Skip to main content</a>
   <header>
-    <a href="#filter-options" class="skip-link">Skip to main content</a>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
@@ -20,17 +20,18 @@
     <section id="map-container">
       <div id="map"> 
       </div>
-    </section>
+    </section> 
     <section>
       <div class="filter-options" id="filter-options">
-        <h2>Filter Results</h2>
-        <div class="select-container">
+        <h2 id="filter-results" tabindex="0">Filter Results</h2>
+        <p id="filter-description">To filter restaurant results, select desired neighborhood and cuisine options.</p>
+        <div class="select-container" id="select-container" role="group" aria-label="Select Options" aria-describedby="filter-description" tabindex="0">
           <label for="neighborhoods-select">Select Neighborhood</label>
-          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" >
             <option value="all">All Neighborhoods</option>
           </select>
           <label for="cuisines-select">Select Cuisine</label>
-          <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+          <select id="cuisines-select" name="cuisines"  onchange="updateRestaurants()">
             <option value="all">All Cuisines</option>
           </select>
         </div>
