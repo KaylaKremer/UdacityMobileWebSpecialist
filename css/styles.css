@@ -82,10 +82,6 @@ figure {
   justify-content: center;
 }
 
-.js-focus-visible :focus:not(.focus-visible) {
-  outline: none;
-}
-
 /* ====================== Navigation ====================== */
 .skip-button {
   position: absolute;
@@ -203,7 +199,7 @@ nav h1 a:hover {
   border-radius: 2px;
 }
 
-#filter-description {
+p#filter-description {
   display: none;
 }
 
