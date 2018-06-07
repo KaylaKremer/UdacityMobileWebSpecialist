@@ -1,7 +1,8 @@
-//Establish version number of cache to remove outdated caches during an update.
-const cacheVersion = 'v29';
+//Establish version number of cache to remove outdated caches during an update
+const cacheVersion = 'v1';
 
-const cacheFiles = [
+//Assets to cache for offline use
+const cacheAssets = [
     '/',
     '/index.html',
     '/restaurant.html',
@@ -42,18 +43,17 @@ const cacheFiles = [
     '/img/10_small.jpg'
 ];
 
+//Installs a service worker and caches assets with current cache version as its name.
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(`${cacheVersion}-restaurant`).then(cache => {
-            return cache.addAll(cacheFiles);
+            return cache.addAll(cacheAssets);
         })
-    ).then( () => {
-        console.log('Install completed');
-    }).catch( () => {
-        console.log('Install failed');
-    });
+    );
+    console.log('Installed service worker and cached assets');
 });
 
+/* Updates the service worker with a newer version (if available in a waiting state). Activate fires once older service worker no longer controls current pages. Older cache(s) is also deleted. */
 self.addEventListener('activate', event => {
     event.waitUntil(caches.keys().then(cacheNames => {
         return Promise.all(cacheNames.filter(cacheName => {
@@ -61,24 +61,35 @@ self.addEventListener('activate', event => {
         }).map(cacheName => {
             return caches.delete(cacheName);
         }));
-    }).then( () => {
-        console.log('Activate completed');
-        }).catch( () => {
-            console.log('Activate failed');
-        })
-    );
+    }));
+    console.log('Deleted old cache and activated new service worker');
 });
 
+/* Fetches assets from the cache the service worker created if a matching response is found. If not, fetches assets from the network and adds these new asset requests to the cache. */
 self.addEventListener('fetch', event => {
+    /* Fix found from Stack Overflow for this error message sometimes received in Chrome Browser - TypeError: Failed to execute 'fetch' on 'ServiceWorkerGlobalScope': 'only-if-cached' can be set only with 'same-orgin' mode. */
+    if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+        return;
+    }
     event.respondWith(
         caches.match(event.request).then(response => {
-            if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
-                return;
-            }
             if(response) {
+                console.log(`Found ${event.request.url} in cache`);
                 return response;
             }
-            return fetch(event.request);
+
+            const fetchRequest = event.request.clone();
+            console.log(`Network request for ${event.request.url}`);
+            return fetch(fetchRequest).then(response => {
+                if(!response || response.status !== 200 || response.type !== 'basic') {
+                    return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(`${cacheVersion}-restaurant`).then(cache => {
+                    cache.put(event.request, responseToCache);
+                });
+                return response;
+            });
         })
     );
 });
