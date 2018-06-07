@@ -67,10 +67,6 @@ self.addEventListener('activate', event => {
 
 /* Fetches assets from the cache the service worker created if a matching response is found. If not, fetches assets from the network and adds these new asset requests to the cache. */
 self.addEventListener('fetch', event => {
-    /* Fix found from Stack Overflow for this error message sometimes received in Chrome Browser - TypeError: Failed to execute 'fetch' on 'ServiceWorkerGlobalScope': 'only-if-cached' can be set only with 'same-orgin' mode. */
-    if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
-        return;
-    }
     event.respondWith(
         caches.match(event.request).then(response => {
             if(response) {
