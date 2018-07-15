@@ -73,7 +73,6 @@ self.addEventListener('fetch', event => {
                 console.log(`Found ${event.request.url} in cache`);
                 return response;
             }
-
             const fetchRequest = event.request.clone();
             console.log(`Network request for ${event.request.url}`);
             return fetch(fetchRequest).then(response => {
