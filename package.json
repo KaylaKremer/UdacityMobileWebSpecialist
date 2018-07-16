@@ -1,0 +1,28 @@
+{
+  "name": "udacity-mobile-web-specialist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kayla Kremer",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8.0.0",
+    "browser-sync": "^2.24.4",
+    "browserify": "^16.2.2",
+    "eslint": "^5.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-eslint": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
