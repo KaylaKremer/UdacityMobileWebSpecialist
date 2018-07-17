@@ -1,22 +1,24 @@
 const gulp = require('gulp');
 const autoprefixer = require('gulp-autoprefixer');
 const eslint = require('gulp-eslint');
-const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
 const browserify = require('browserify');
 const babelify = require('babelify');
-const source = require("vinyl-source-stream");
+const source = require('vinyl-source-stream');
 
 //For live editing
-gulp.task('watch', ['copy-html', 'copy-images', 'styles', 'lint', 'scripts'], () => {
+gulp.task('watch', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => {
 	gulp.watch('./css/**/*.css', ['styles']);
 	gulp.watch('./js/**/*.js', ['lint', 'scripts']);
 	gulp.watch('./sw.js', ['lint', 'sw']);
-	gulp.watch('./index.html', ['copy-html']);
+	gulp.watch('./index.html', ['html']);
+	gulp.watch('./restaurant.html', ['html']);
+	gulp.watch('./dist/css/**/*.css').on('change', browserSync.reload);
 	gulp.watch('./dist/js/**/*.js').on('change', browserSync.reload);
+	gulp.watch('./dist/sw.js').on('change', browserSync.reload);
 	gulp.watch('./dist/index.html').on('change', browserSync.reload);
 	gulp.watch('./dist/restaurant.html').on('change', browserSync.reload);
 
@@ -27,11 +29,11 @@ gulp.task('watch', ['copy-html', 'copy-images', 'styles', 'lint', 'scripts'], ()
 	});
 });
 
-//For development build
-gulp.task('build', ['copy-html', 'copy-images', 'styles', 'lint', 'scripts', 'sw']);
+//For development
+gulp.task('dev', ['html', 'images', 'styles', 'lint', 'scripts', 'sw']);
 
-//For production build
-gulp.task('build:production', ['copy-html', 'copy-images', 'styles-build', 'lint', 'scripts-build', 'sw-build']);
+//For production
+gulp.task('build', ['html', 'images', 'styles-build', 'lint', 'scripts-build', 'sw-build']);
 
 gulp.task('lint', () => {
 	return gulp.src(['./js/**/*.js', './sw.js', '!node_modules/**'])
@@ -50,10 +52,7 @@ gulp.task('scripts', () => {
 
 gulp.task('scripts-build', () => {
 	gulp.src('./js/**/*.js')
-		.pipe(sourcemaps.init())
-		.pipe(babel())
-		.pipe(uglify())
-		.pipe(sourcemaps.write())
+		.pipe(babel({minified: true}))
 		.pipe(gulp.dest('./dist/js'));
 });
 
@@ -69,27 +68,23 @@ gulp.task('styles', () => {
 
 gulp.task('styles-build', () => {
 	gulp.src('./css/**/*.css')
-		.pipe(sourcemaps.init())
 		.pipe(autoprefixer({
 			browsers: ['last 2 versions']
 		}))
 		.pipe(cleanCSS())
-		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('copy-html', () => {
+gulp.task('html', () => {
 	gulp.src('./*.html')
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('copy-images', () => {
+gulp.task('images', () => {
 	gulp.src('img/*')
 		.pipe(gulp.dest('./dist/img'));
 });
 
-//Still working on sw tasks!
-//To Do: Add source mapping
 gulp.task('sw', () => {
 	const b = browserify({
 		debug: true
@@ -102,13 +97,12 @@ gulp.task('sw', () => {
 		.pipe(gulp.dest('./dist'));
 });
 
-//To Do: Add source mapping, minification(uglify)
 gulp.task('sw-build', () => {
 	const b = browserify({
-		debug: true
+		debug: false
 	});
 	return b
-		.transform(babelify)
+		.transform(babelify, {minified: true})
 		.require('./dist/sw.js', {entry: true})
 		.bundle()
 		.pipe(source('./sw.js'))

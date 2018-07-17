@@ -16,24 +16,20 @@ class DBHelper {
    * Fetch all restaurants.
    */
 	static fetchRestaurants(callback, id) {
-		let fetchURL;
-		if (!id) {
-			fetchURL = `${DBHelper.DATABASE_URL}`;
-		} else {
-			fetchURL = `${DBHelper.DATABASE_URL}/${id}`;
-		}
-		fetch(fetchURL, {method: "GET"}).then(response => {
+		let restaurantURL;
+		id ? restaurantURL = `${DBHelper.DATABASE_URL}/${id}` : restaurantURL = `${DBHelper.DATABASE_URL}`;
+		fetch(restaurantURL).then(response => {
 			if(response.ok){
 				return response.json().then(restaurants => {
 					callback(null, restaurants);
 				}).catch(error => {
-					callback(`${error.status}: ${error.statusText}`, null);
+					callback(`Error: ${error.message}`, null);
 				});
 			} else {
-				return callback(`${response.status}: ${response.statusText}`, null);
+				throw response;
 			}
 		}).catch(error => {
-			callback(`${error.status}: ${error.statusText}`, null);
+			callback(`Error: ${error.message}`, null);
 		});
 	}
 
