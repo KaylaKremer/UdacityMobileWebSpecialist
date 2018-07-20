@@ -5,7 +5,7 @@ class DBHelper {
 
 	/**
    * Database URL.
-   * Change this to restaurants.json file location on your server.
+   * Changed to retrieve data from the server on localhost:1337.
    */
 	static get DATABASE_URL() {
 		const port = 1337; // Change this to your server port
@@ -13,7 +13,7 @@ class DBHelper {
 	}
 
 	/**
-   * Fetch all restaurants.
+   * Fetch all restaurants. (Code is refactored here to use fetch API instead of XHR with proper error handling.)
    */
 	static fetchRestaurants(callback, id) {
 		let restaurantURL;

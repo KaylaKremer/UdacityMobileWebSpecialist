@@ -22,6 +22,7 @@
     "gulp-clean-css": "^3.9.4",
     "gulp-eslint": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
+    "idb": "^2.1.3",
     "vinyl-source-stream": "^2.0.0"
   }
 }

@@ -1,7 +1,18 @@
-//Establish version number of cache to remove outdated caches during an update
+// Import IndexedDB
+import idb from 'idb';
+
+// Establish version number of cache to remove outdated caches during an update
 const cacheVersion = 'v3';
 
-//Assets to cache for offline use
+// Created IndexedDB database
+const dbPromise = idb.open('restaurant-reviews-db', 1, upgradeDB => {
+	switch (upgradeDB.oldVersion) {
+	case 0:
+		upgradeDB.createObjectStore('restaurants-reviews', {keyPath: 'id'});
+	}
+});
+
+// Assets to cache for offline use
 const cacheAssets = [
 	'/',
 	'/index.html',
@@ -16,7 +27,6 @@ const cacheAssets = [
 	'/restaurant.html?id=8',
 	'/restaurant.html?id=9',
 	'/restaurant.html?id=10',
-	//'../data/restaurants.json',
 	'/css/styles.css',
 	'/js/dbhelper.js',
 	'/js/index.js',
@@ -44,11 +54,13 @@ const cacheAssets = [
 	'/img/10_small.jpg'
 ];
 
-//Installs a service worker and caches assets with current cache version as its name.
+// Installs a service worker and caches assets with current cache version as its name.
 self.addEventListener('install', event => {
 	event.waitUntil(
-		caches.open(`${cacheVersion}-restaurant`).then(cache => {
+		caches.open(`${cacheVersion}-restaurant-reviews`).then(cache => {
 			return cache.addAll(cacheAssets);
+		}).catch(error => {
+			console.log(`Cache install failed: ${error}`);
 		})
 	);
 	console.log('Installed service worker and cached assets');
@@ -66,8 +78,60 @@ self.addEventListener('activate', event => {
 	console.log('Deleted old cache and activated new service worker');
 });
 
-/* Fetches assets from the cache the service worker created if a matching response is found. If not, fetches assets from the network and adds these new asset requests to the cache. */
+/* Code below is WIP */
 self.addEventListener('fetch', event => {
+	const requestURL = new URL(event.request.url);
+	if (requestURL.port === '1337'){
+		console.log(requestURL.searchParams);
+		if(requestURL.searchParams.get('id')){
+			const id = requestURL.searchParams.get('id');
+			console.log('id', id);
+			handleIndexedDBRequest(event, id);
+		} else {
+			const id = '0';
+			console.log('id', id);
+			handleIndexedDBRequest(event, id);
+		}
+	} else {
+		handleCacheRequest(event);
+	}
+});
+
+function handleIndexedDBRequest(event, id){
+	event.respondWith(
+		dbPromise.then(db => {
+			const tx = db.transaction('restaurant-reviews');
+			const restaurantReviewsStore = tx.objectStore('restaurant-reviews');
+			return restaurantReviewsStore.get(id);
+		}).then(restaurantReview => {
+			if (restaurantReview.data) {
+				return restaurantReview.data;
+			} else {
+				fetch(event.request).then(fetchedRestaurantReview => {
+					fetchedRestaurantReview.json();
+				}).then(restaurantReview => {
+					return dbPromise.then(db => {
+						const tx = db.transaction('restaurant-reviews', 'readwrite');
+						const restaurantReviewsStore = tx.objectStore('restaurant-reviews');
+						restaurantReviewsStore.put({
+							id: id,
+							data: restaurantReview
+						});
+						return restaurantReview;
+					});
+				}).then(response => {
+					console.log(response);
+				}).catch(error => {
+					console.log(`Failed to retrieve data from server: ${error}`);
+				});
+			}
+		}).catch(error => {
+			console.log(`Failed to retrieve data from IndexedDB: ${error}`);
+		})
+	);
+}
+
+function handleCacheRequest(event){
 	event.respondWith(
 		caches.match(event.request).then(response => {
 			if(response) {
@@ -81,12 +145,11 @@ self.addEventListener('fetch', event => {
 					return response;
 				}
 				const responseToCache = response.clone();
-				caches.open(`${cacheVersion}-restaurant`).then(cache => {
+				caches.open(`${cacheVersion}-restaurant-reviews`).then(cache => {
 					cache.put(event.request, responseToCache);
 				});
 				return response;
 			});
 		})
 	);
-});
-
+}
