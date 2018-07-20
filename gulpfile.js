@@ -30,10 +30,22 @@ gulp.task('watch', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => 
 });
 
 //For development
-gulp.task('dev', ['html', 'images', 'styles', 'lint', 'scripts', 'sw']);
+gulp.task('dev', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => {
+	browserSync.init({
+		server: "./dist",
+		port: 5500,
+		reloadDelay: 1000
+	});
+});
 
 //For production
-gulp.task('build', ['html', 'images', 'styles-build', 'lint', 'scripts-build', 'sw-build']);
+gulp.task('build', ['html', 'images', 'styles-build', 'lint', 'scripts-build', 'sw-build'], () => {
+	browserSync.init({
+		server: "./dist",
+		port: 5500,
+		reloadDelay: 1000
+	});
+});
 
 gulp.task('lint', () => {
 	return gulp.src(['./js/**/*.js', './sw.js', '!node_modules/**'])
@@ -90,7 +102,7 @@ gulp.task('sw', () => {
 		debug: true
 	});
 	return b
-		.transform(babelify)
+		.transform(babelify.configure({presets: ["env"]}))
 		.require('./dist/sw.js', {entry: true})
 		.bundle()
 		.pipe(source('./sw.js'))
@@ -102,7 +114,7 @@ gulp.task('sw-build', () => {
 		debug: false
 	});
 	return b
-		.transform(babelify, {minified: true})
+		.transform(babelify.configure({presets: ["env"], minified: true}))
 		.require('./dist/sw.js', {entry: true})
 		.bundle()
 		.pipe(source('./sw.js'))
