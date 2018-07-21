@@ -2,7 +2,7 @@
  * Common database helper functions.
  */
 class DBHelper {
-
+	
 	/**
    * Database URL.
    * Changed to retrieve data from the server on localhost:1337.
@@ -16,20 +16,36 @@ class DBHelper {
    * Fetch all restaurants. (Code is refactored here to use fetch API instead of XHR with proper error handling.)
    */
 	static fetchRestaurants(callback, id) {
+		const dbPromise = idb.open('restaurant-reviews-db', 1, upgradeDB => {
+			switch (upgradeDB.oldVersion){
+			case 0:
+				upgradeDB.createObjectStore('restaurant-reviews', {keyPath: 'id'});
+			}
+		});
 		let restaurantURL;
 		id ? restaurantURL = `${DBHelper.DATABASE_URL}/${id}` : restaurantURL = `${DBHelper.DATABASE_URL}`;
 		fetch(restaurantURL).then(response => {
 			if(response.ok){
-				return response.json().then(restaurants => {
-					callback(null, restaurants);
-				}).catch(error => {
-					callback(`Error: ${error.message}`, null);
+				return response.json().then(restaurantReviews => {
+					dbPromise.then(db => {
+						const tx = db.transaction('restaurant-reviews', 'readwrite');
+						let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
+						restaurantReviews.forEach(restaurantReview => {
+							restaurantReviewsStore.put(restaurantReview);
+						});
+						return tx.complete && restaurantReviewsStore.getAll();
+					}).then(restaurantReviews => {
+						console.log(`Sucessfully fetched & stored data in IndexedDB: ${restaurantReviews}`);
+						callback(null, restaurantReviews);
+					}).catch(error => {
+						callback(`Failed to fetch & store data in IndexedDB: ${error}`, null);
+					});
 				});
 			} else {
 				throw response;
 			}
 		}).catch(error => {
-			callback(`Error: ${error.message}`, null);
+			callback(`Fetch request for data failed: ${error}`, null);
 		});
 	}
 
@@ -42,7 +58,7 @@ class DBHelper {
 			if (error) {
 				callback(error, null);
 			} else {
-				const restaurant = restaurants.find(r => r.id == id);
+				const restaurant = restaurants.find(r => r.id === parseInt(id));
 				if (restaurant) { // Got the restaurant
 					callback(null, restaurant);
 				} else { // Restaurant does not exist in the database

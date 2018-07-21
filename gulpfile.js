@@ -98,8 +98,22 @@ gulp.task('images', () => {
 });
 
 gulp.task('sw', () => {
+	gulp.src('./sw.js')
+		.pipe(sourcemaps.init())
+		.pipe(babel())
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('sw-build', () => {
+	gulp.src('/sw.js')
+		.pipe(babel({minified: true}))
+		.pipe(gulp.dest('./dist'));
+});
+
+/*gulp.task('sw-dev', () => {
 	const b = browserify({
-		debug: true
+		debug: false
 	});
 	return b
 		.transform(babelify.configure({presets: ["env"]}))
@@ -119,6 +133,6 @@ gulp.task('sw-build', () => {
 		.bundle()
 		.pipe(source('./sw.js'))
 		.pipe(gulp.dest('./dist'));
-});
+});*/
 
 
