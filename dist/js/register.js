@@ -1,15 +1,2 @@
-'use strict';
-
-//Registers service worker if browser supports it
-(function () {
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (reg) {
-			console.log('ServiceWorker registration successful! ' + reg.scope);
-		}).catch(function (error) {
-			console.log('ServiceWorker registration failed! ' + error);
-		});
-	} else {
-		console.log('ServiceWorker is not supported');
-	}
-})();
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlZ2lzdGVyLmpzIl0sIm5hbWVzIjpbIm5hdmlnYXRvciIsInNlcnZpY2VXb3JrZXIiLCJyZWdpc3RlciIsInNjb3BlIiwidGhlbiIsImNvbnNvbGUiLCJsb2ciLCJyZWciLCJjYXRjaCIsImVycm9yIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQ0MsYUFBWTtBQUNaLEtBQUksbUJBQW1CQSxTQUF2QixFQUFrQztBQUNqQ0EsWUFBVUMsYUFBVixDQUF3QkMsUUFBeEIsQ0FBaUMsUUFBakMsRUFBMkMsRUFBQ0MsT0FBTyxHQUFSLEVBQTNDLEVBQXlEQyxJQUF6RCxDQUE4RCxlQUFPO0FBQ3BFQyxXQUFRQyxHQUFSLDZDQUFzREMsSUFBSUosS0FBMUQ7QUFDQSxHQUZELEVBRUdLLEtBRkgsQ0FFUyxpQkFBUztBQUNqQkgsV0FBUUMsR0FBUix5Q0FBa0RHLEtBQWxEO0FBQ0EsR0FKRDtBQUtBLEVBTkQsTUFNTztBQUNOSixVQUFRQyxHQUFSLENBQVksZ0NBQVo7QUFDQTtBQUNELENBVkEsR0FBRCIsImZpbGUiOiJyZWdpc3Rlci5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8vUmVnaXN0ZXJzIHNlcnZpY2Ugd29ya2VyIGlmIGJyb3dzZXIgc3VwcG9ydHMgaXRcbihmdW5jdGlvbiAoKSB7XG5cdGlmICgnc2VydmljZVdvcmtlcicgaW4gbmF2aWdhdG9yKSB7XG5cdFx0bmF2aWdhdG9yLnNlcnZpY2VXb3JrZXIucmVnaXN0ZXIoJy9zdy5qcycsIHtzY29wZTogJy8nfSkudGhlbihyZWcgPT4ge1xuXHRcdFx0Y29uc29sZS5sb2coYFNlcnZpY2VXb3JrZXIgcmVnaXN0cmF0aW9uIHN1Y2Nlc3NmdWwhICR7cmVnLnNjb3BlfWApO1xuXHRcdH0pLmNhdGNoKGVycm9yID0+IHtcblx0XHRcdGNvbnNvbGUubG9nKGBTZXJ2aWNlV29ya2VyIHJlZ2lzdHJhdGlvbiBmYWlsZWQhICR7ZXJyb3J9YCk7XG5cdFx0fSk7XG5cdH0gZWxzZSB7XG5cdFx0Y29uc29sZS5sb2coJ1NlcnZpY2VXb3JrZXIgaXMgbm90IHN1cHBvcnRlZCcpO1xuXHR9XG59KCkpOyJdfQ==
+'use strict';//Registers service worker if browser supports it
+(function(){if('serviceWorker'in navigator){navigator.serviceWorker.register('/sw.js',{scope:'/'}).then(function(reg){console.log('ServiceWorker registration successful! '+reg.scope)}).catch(function(error){console.log('ServiceWorker registration failed! '+error)})}else{console.log('ServiceWorker is not supported')}})();

@@ -3,9 +3,11 @@
 
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#207bbc">
   <meta charset="utf-8">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="shortcut icon" href="./img/favicon.ico">
   <title>Restaurant Reviews</title>
 </head>
 
@@ -42,15 +44,32 @@
   </main>
 
   <footer id="copyright" role="contentinfo">
-    Copyright (c) 2017 <a href="/" aria-describedby="copyright" title="Restaurant Reviews"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    Copyright (c) 2018 <a href="/" aria-describedby="copyright" title="Restaurant Reviews"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
-  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
-  <!-- Service Worker -->
-  <script type="application/javascript" charset="utf-8" src="js/register.js"></script>
 
+  <script type="application/javascript" charset="utf-8" src="js/idb-bundle.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/lazysizes.js"></script> 
+  <script async type="application/javascript" charset="utf-8" src="js/register.js"></script> 
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
+  <script>
+    const loadDeferredCSS = () => {
+      const stylesLink = document.createElement("link");
+      stylesLink.rel = "stylesheet";
+      stylesLink.type = "text/css";
+      stylesLink.href = "./css/styles.css";
+      const head = document.getElementsByTagName('head')[0];head.parentNode.insertBefore(stylesLink, head);
+    };
+    const raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) {
+      raf(() => { 
+        window.setTimeout(loadDeferredCSS, 0); 
+      });
+    } else {
+      window.addEventListener('load', loadDeferredCSS);
+    }
+  </script>
 </body>
 
 </html>

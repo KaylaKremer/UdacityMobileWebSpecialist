@@ -1,5 +1,5 @@
 //Establish version number of cache to remove outdated caches during an update
-const cacheVersion = 'v1';
+const cacheVersion = 'v17';
 
 //Assets to cache for offline use
 const cacheAssets = [
@@ -16,32 +16,36 @@ const cacheAssets = [
 	'/restaurant.html?id=8',
 	'/restaurant.html?id=9',
 	'/restaurant.html?id=10',
+	'/manifest.json',
 	'/css/styles.css',
-	'/js/idb.js',
-	'/js/dbhelper.js',
+	'/js/idb-bundle.js',
 	'/js/main.js',
 	'/js/restaurant_info.js',
+	'/js/lazysizes.js',
 	'/js/register.js',
-	'/img/1_large.jpg',
-	'/img/2_large.jpg',
-	'/img/3_large.jpg',
-	'/img/4_large.jpg',
-	'/img/5_large.jpg',
-	'/img/6_large.jpg',
-	'/img/7_large.jpg',
-	'/img/8_large.jpg',
-	'/img/9_large.jpg',
-	'/img/10_large.jpg',
-	'/img/1_small.jpg',
-	'/img/2_small.jpg',
-	'/img/3_small.jpg',
-	'/img/4_small.jpg',
-	'/img/5_small.jpg',
-	'/img/6_small.jpg',
-	'/img/7_small.jpg',
-	'/img/8_small.jpg',
-	'/img/9_small.jpg',
-	'/img/10_small.jpg'
+	'/img/1_large.webp',
+	'/img/2_large.webp',
+	'/img/3_large.webp',
+	'/img/4_large.webp',
+	'/img/5_large.webp',
+	'/img/6_large.webp',
+	'/img/7_large.webp',
+	'/img/8_large.webp',
+	'/img/9_large.webp',
+	'/img/10_large.webp',
+	'/img/1_small.webp',
+	'/img/2_small.webp',
+	'/img/3_small.webp',
+	'/img/4_small.webp',
+	'/img/5_small.webp',
+	'/img/6_small.webp',
+	'/img/7_small.webp',
+	'/img/8_small.webp',
+	'/img/9_small.webp',
+	'/img/10_small.webp',
+	'/img/icon-192.png',
+	'/img/icon-512.png',
+	'/img/favicon.ico'
 ];
 
 //Installs a service worker and caches assets with current cache version as its name.
@@ -73,17 +77,19 @@ self.addEventListener('fetch', event => {
 			if(response) {
 				return response;
 			}
-			const fetchRequest = event.request.clone();
-			return fetch(fetchRequest).then(response => {
-				if(!response || response.status !== 200 || response.type !== 'basic') {
+			else {
+				const fetchRequest = event.request.clone();
+				return fetch(fetchRequest).then(response => {
+					if(!response || response.status !== 200 || response.type !== 'basic') {
+						return response;
+					}
+					const responseToCache = response.clone();
+					caches.open(`${cacheVersion}-restaurant`).then(cache => {
+						cache.put(fetchRequest, responseToCache);
+					});
 					return response;
-				}
-				const responseToCache = response.clone();
-				caches.open(`${cacheVersion}-restaurant`).then(cache => {
-					cache.put(event.request, responseToCache);
 				});
-				return response;
-			});
+			}
 		})
 	);
 });

@@ -1,16 +1,17 @@
 const gulp = require('gulp');
+const concat = require('gulp-concat');
 const autoprefixer = require('gulp-autoprefixer');
 const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
-const browserify = require('browserify');
-const babelify = require('babelify');
-const source = require('vinyl-source-stream');
+//const browserify = require('browserify');
+//const babelify = require('babelify');
+//const source = require('vinyl-source-stream');
 
 //For live editing
-gulp.task('watch', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => {
+gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-scripts', 'scripts', 'sw'], () => {
 	gulp.watch('./css/**/*.css', ['styles']);
 	gulp.watch('./js/**/*.js', ['lint', 'scripts']);
 	gulp.watch('./sw.js', ['lint', 'sw']);
@@ -30,7 +31,7 @@ gulp.task('watch', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => 
 });
 
 //For development
-gulp.task('dev', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => {
+gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-scripts', 'scripts', 'sw'], () => {
 	browserSync.init({
 		server: "./dist",
 		port: 5500,
@@ -39,7 +40,7 @@ gulp.task('dev', ['html', 'images', 'styles', 'lint', 'scripts', 'sw'], () => {
 });
 
 //For production
-gulp.task('build', ['html', 'images', 'styles-build', 'lint', 'scripts-build', 'sw-build'], () => {
+gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'concat-idb-scripts-build', 'scripts-build', 'sw-build'], () => {
 	browserSync.init({
 		server: "./dist",
 		port: 5500,
@@ -47,25 +48,19 @@ gulp.task('build', ['html', 'images', 'styles-build', 'lint', 'scripts-build', '
 	});
 });
 
-gulp.task('lint', () => {
-	return gulp.src(['./js/**/*.js', './sw.js', '!node_modules/**'])
-		.pipe(eslint())
-		.pipe(eslint.format())
-		.pipe(eslint.failAfterError());
+gulp.task('html', () => {
+	gulp.src('./*.html')
+		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('scripts', () => {
-	gulp.src('./js/**/*.js')
-		.pipe(sourcemaps.init())
-		.pipe(babel())
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('./dist/js'));
+gulp.task('images', () => {
+	gulp.src(['./img/**/*.webp', './img/**/*.png', './img/**/favicon.ico'])
+		.pipe(gulp.dest('./dist/img'));
 });
 
-gulp.task('scripts-build', () => {
-	gulp.src('./js/**/*.js')
-		.pipe(babel({minified: true}))
-		.pipe(gulp.dest('./dist/js'));
+gulp.task('manifest', () => {
+	gulp.src('./manifest.json')
+		.pipe(gulp.dest('./dist'));
 });
 
 gulp.task('styles', () => {
@@ -87,14 +82,41 @@ gulp.task('styles-build', () => {
 		.pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('html', () => {
-	gulp.src('./*.html')
-		.pipe(gulp.dest('./dist'));
+gulp.task('lint', () => {
+	return gulp.src(['./js/**/*.js', './sw.js', '!node_modules/**'])
+		.pipe(eslint())
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
 });
 
-gulp.task('images', () => {
-	gulp.src('img/*')
-		.pipe(gulp.dest('./dist/img'));
+gulp.task('concat-idb-scripts', () => {
+	gulp.src(['./js/idb.js', './js/dbhelper.js'])
+		.pipe(concat('idb-bundle.js'))
+		.pipe(sourcemaps.init())
+		.pipe(babel())
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('concat-idb-scripts-build', () => {
+	gulp.src(['./js/idb.js', './js/dbhelper.js'])
+		.pipe(concat('idb-bundle.js'))
+		.pipe(babel({minified: true}))
+		.pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('scripts', () => {
+	gulp.src(['./js/main.js', './js/restaurant_info.js', './js/register.js', './js/lazysizes.js'])
+		.pipe(sourcemaps.init())
+		.pipe(babel())
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('scripts-build', () => {
+	gulp.src(['./js/main.js', './js/restaurant_info.js', './js/register.js', './js/lazysizes.js'])
+		.pipe(babel({minified: true}))
+		.pipe(gulp.dest('./dist/js'));
 });
 
 gulp.task('sw', () => {
@@ -106,7 +128,7 @@ gulp.task('sw', () => {
 });
 
 gulp.task('sw-build', () => {
-	gulp.src('/sw.js')
+	gulp.src('./sw.js')
 		.pipe(babel({minified: true}))
 		.pipe(gulp.dest('./dist'));
 });

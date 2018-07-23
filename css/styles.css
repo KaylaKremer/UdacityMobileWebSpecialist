@@ -534,6 +534,14 @@ nav h1 a:hover {
   max-width: 500px;
   }
 }
+@media screen and (min-width: 1127px) {
+  #reviews-list::after {
+    content: "";
+    flex: 1 1 500px;
+    max-width: 500px;
+    margin-right: 2rem;
+  }
+}
 @media screen and (min-width: 1161px) {
   #restaurants-list li {
     min-width: 350px;
@@ -549,14 +557,6 @@ nav h1 a:hover {
     margin-right: 2rem;
   }
 }
-@media screen and (min-width: 1127px) {
-  #reviews-list::after {
-    content: "";
-    flex: 1 1 500px;
-    max-width: 500px;
-    margin-right: 2rem;
-  }
-}
 @media screen and (min-width: 1200px) {
   main,
   .inside,
@@ -566,4 +566,3 @@ nav h1 a:hover {
     margin-right: auto;
   }
 }
-

@@ -35,6 +35,9 @@
         ],
         "callback-return": [
             "off"
+        ],
+        "no-mixed-spaces-and-tabs": [
+            "off"
         ]
     }
 }

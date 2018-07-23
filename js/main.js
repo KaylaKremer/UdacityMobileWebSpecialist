@@ -139,10 +139,14 @@ const createRestaurantHTML = (restaurant) => {
 	const li = document.createElement('li');
 	// Loads small or large version of restaurant image based on srcset and sizes. Also dynamically sets alt and title text of the image. 
 	const image = document.createElement('img');
-	image.className = 'restaurant-img';
-	image.src = DBHelper.largeImageUrlForRestaurant(restaurant);
-	image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
-	image.sizes = '50vw';
+	image.className = 'restaurant-img lazyload';
+	//image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
+	//image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
+	//image.sizes = '50vw';
+	//image.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+	image.setAttribute('data-src', `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w`);
+	image.setAttribute('data-srcset',`${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`);
+	image.setAttribute('data-sizes', 'auto');
 	image.title = `${restaurant.name}`;
 	image.alt = `${restaurant.name} in ${restaurant.neighborhood} - ${restaurant.cuisine_type} restaurant`;
 	li.append(image);

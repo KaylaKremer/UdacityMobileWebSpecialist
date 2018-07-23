@@ -20,6 +20,7 @@
     "eslint": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-clean-css": "^3.9.4",
+    "gulp-concat": "^2.6.1",
     "gulp-eslint": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "idb": "^2.1.3",

@@ -13,7 +13,7 @@ class DBHelper {
 	}
 
 	/**
-   * Fetch all restaurants. (Code is refactored here to use fetch API instead of XHR with proper error handling.)
+   * Fetches all restaurant reviews data. Creates an IndexedDB database named 'restaurant-reviews-db' with an object store of 'restaurant-reviews'. If response from the server is ok, stores data received into the database and then returns the data. If response from the server fails, look in the database to see if there is data already stored there and return the data. Catches and handles errors appropriately when data cannot be retrieved.
    */
 	static fetchRestaurants(callback, id) {
 		const dbPromise = idb.open('restaurant-reviews-db', 1, upgradeDB => {
@@ -35,17 +35,27 @@ class DBHelper {
 						});
 						return tx.complete && restaurantReviewsStore.getAll();
 					}).then(restaurantReviews => {
-						console.log(`Sucessfully fetched & stored data in IndexedDB: ${restaurantReviews}`);
+						console.log(`Sucessfully fetched data from server & stored in IndexedDB!`);
 						callback(null, restaurantReviews);
 					}).catch(error => {
-						callback(`Failed to fetch & store data in IndexedDB: ${error}`, null);
+						callback(`Failed to fetch data from server & store n IndexedDB: ${error}`, null);
 					});
 				});
 			} else {
-				throw response;
+				dbPromise.then(db => {
+					const tx = db.transaction('restaurant-reviews', 'readonly');
+					let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
+					//if (restaurantReviewsStores.getAll())
+					return tx.complete && restaurantReviewsStore.getAll();
+				}).then(restaurantReviews => {
+					console.log(`Sucessfully fetched data from IndexedDB!`);
+					callback(null, restaurantReviews);
+				}).catch(error => {
+					callback(`Failed to fetch data from IndexedDB: ${error}`, null);
+				});
 			}
 		}).catch(error => {
-			callback(`Fetch request for data failed: ${error}`, null);
+			callback(`Fetch request for data from server failed: ${error}`, null);
 		});
 	}
 
