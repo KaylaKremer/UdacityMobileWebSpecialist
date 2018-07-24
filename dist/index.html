@@ -58,10 +58,10 @@
       stylesLink.rel = "stylesheet";
       stylesLink.type = "text/css";
       stylesLink.href = "./css/styles.css";
-      const head = document.getElementsByTagName('head')[0];head.parentNode.insertBefore(stylesLink, head);
+      const head = document.getElementsByTagName('head')[0];head.appendChild(stylesLink);
     };
     const raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     if (raf) {
       raf(() => { 
         window.setTimeout(loadDeferredCSS, 0); 
@@ -70,6 +70,9 @@
       window.addEventListener('load', loadDeferredCSS);
     }
   </script>
+  <noscript>
+      <link rel="stylesheet" type="text/css" href="./css/styles.css"/>
+  </noscript>
 </body>
 
 </html>

@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#207bbc">
   <meta charset="utf-8">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-  <link rel="stylesheet" type="text/css" href="./css/styles.css">
   <link rel="manifest" href="./manifest.json">
   <link rel="shortcut icon" href="./img/favicon.ico">
   <title>Restaurant Info</title>
@@ -52,7 +51,28 @@
   <script type="application/javascript" charset="utf-8" src="js/restaurant_info.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/lazysizes.js"></script>
   <script async type="application/javascript" charset="utf-8" src="js/register.js"></script> 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script> 
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc&libraries=places&callback=initMap"></script>
+  <script>
+    const loadDeferredCSS = () => {
+      const stylesLink = document.createElement("link");
+      stylesLink.rel = "stylesheet";
+      stylesLink.type = "text/css";
+      stylesLink.href = "./css/styles.css";
+      const head = document.getElementsByTagName('head')[0];head.appendChild(stylesLink);
+    };
+    const raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) {
+      raf(() => { 
+        window.setTimeout(loadDeferredCSS, 0); 
+      });
+    } else {
+      window.addEventListener('load', loadDeferredCSS);
+    }
+  </script>
+  <noscript>
+      <link rel="stylesheet" type="text/css" href="./css/styles.css"/>
+  </noscript> 
 
 </body>
 

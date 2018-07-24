@@ -147,9 +147,13 @@ nav h1 a:hover {
 /* ====================== Map ====================== */
 
 #map {
-  height: 300px;
+  height: 400px;
   width: 100%;
   background-color: #ccc;
+}
+
+#static-map-img:hover {
+  cursor: pointer;
 }
 
 /* ====================== Restaurant Filtering ====================== */

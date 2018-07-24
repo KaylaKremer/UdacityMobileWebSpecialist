@@ -201,4 +201,21 @@ class DBHelper {
 		);
 		return marker;
 	}
+
+	/**
+   * Static map image to be displayed when page initially loads.
+   */
+	static staticImageForMap(restaurants) {
+		let loc = {
+			lat: 40.722216,
+			lng: -73.987501
+		};
+		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${
+			loc.lat},${loc.lng}&zoom=12&size=400x400&markers=color:red`;
+		restaurants.forEach(restaurant => {
+			staticMap += `|${restaurant.latlng.lat},${restaurant.latlng.lng}`;
+		});
+		staticMap += `&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
+		return staticMap;
+	}
 }
