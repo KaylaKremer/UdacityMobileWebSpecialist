@@ -151,14 +151,16 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 		fetchNeighborhoods();
 		fetchCuisines();
 		const staticMap = DBHelper.staticImageForMap(self.restaurants);
-		const mapContainer = document.getElementById('map');
+		const map = document.getElementById('map');
 		const staticMapImg = document.createElement('img');
 		staticMapImg.id = ('static-map-img');
+		staticMapImg.style.width = `${map.clientWidth}px`;
+		staticMapImg.style.height = `${map.clientHeight}px`;
 		staticMapImg.src = staticMap;
 		staticMapImg.addEventListener('click', () => {
 			getLiveMap();
 		});
-		mapContainer.appendChild(staticMapImg);
+		map.appendChild(staticMapImg);
 		initLoad = false;
 	} else {
 		addMarkersToMap();

@@ -1,5 +1,5 @@
 //Establish version number of cache to remove outdated caches during an update
-const cacheVersion = 'v17';
+const cacheVersion = 'v19';
 
 //Assets to cache for offline use
 const cacheAssets = [
@@ -18,7 +18,8 @@ const cacheAssets = [
 	'/restaurant.html?id=10',
 	'/manifest.json',
 	'/css/styles.css',
-	'/js/idb-bundle.js',
+	'/js/idb.js',
+	'/js/dbhelper.js',
 	'/js/main.js',
 	'/js/restaurant_info.js',
 	'/js/lazysizes.js',

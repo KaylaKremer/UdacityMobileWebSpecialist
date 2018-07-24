@@ -11,7 +11,7 @@ const browserSync = require('browser-sync').create();
 //const source = require('vinyl-source-stream');
 
 //For live editing
-gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-scripts', 'scripts', 'sw'], () => {
+gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw'], () => {
 	gulp.watch('./css/**/*.css', ['styles']);
 	gulp.watch('./js/**/*.js', ['lint', 'scripts']);
 	gulp.watch('./sw.js', ['lint', 'sw']);
@@ -31,7 +31,7 @@ gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-
 });
 
 //For development
-gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-scripts', 'scripts', 'sw'], () => {
+gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw'], () => {
 	browserSync.init({
 		server: "./dist",
 		port: 5500,
@@ -40,7 +40,7 @@ gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'concat-idb-sc
 });
 
 //For production
-gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'concat-idb-scripts-build', 'scripts-build', 'sw-build'], () => {
+gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'scripts-build', 'sw-build'], () => {
 	browserSync.init({
 		server: "./dist",
 		port: 5500,
@@ -89,7 +89,7 @@ gulp.task('lint', () => {
 		.pipe(eslint.failAfterError());
 });
 
-gulp.task('concat-idb-scripts', () => {
+/*gulp.task('concat-idb-scripts', () => {
 	gulp.src(['./js/idb.js', './js/dbhelper.js'])
 		.pipe(concat('idb-bundle.js'))
 		.pipe(sourcemaps.init())
@@ -103,10 +103,10 @@ gulp.task('concat-idb-scripts-build', () => {
 		.pipe(concat('idb-bundle.js'))
 		.pipe(babel({minified: true}))
 		.pipe(gulp.dest('./dist/js'));
-});
+});*/
 
 gulp.task('scripts', () => {
-	gulp.src(['./js/main.js', './js/restaurant_info.js', './js/register.js', './js/lazysizes.js'])
+	gulp.src('./js/**/*.js')
 		.pipe(sourcemaps.init())
 		.pipe(babel())
 		.pipe(sourcemaps.write())
@@ -114,7 +114,7 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('scripts-build', () => {
-	gulp.src(['./js/main.js', './js/restaurant_info.js', './js/register.js', './js/lazysizes.js'])
+	gulp.src('./js/**/*.js')
 		.pipe(babel({minified: true}))
 		.pipe(gulp.dest('./dist/js'));
 });
@@ -133,6 +133,7 @@ gulp.task('sw-build', () => {
 		.pipe(gulp.dest('./dist'));
 });
 
+//Old task runners for Browserify
 /*gulp.task('sw-dev', () => {
 	const b = browserify({
 		debug: false

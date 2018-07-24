@@ -210,8 +210,11 @@ class DBHelper {
 			lat: 40.722216,
 			lng: -73.987501
 		};
+		const map = document.getElementById('map');
+		const mapWidth = map.clientWidth;
+		const mapHeight = map.clientHeight;
 		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${
-			loc.lat},${loc.lng}&zoom=12&size=400x400&markers=color:red`;
+			loc.lat},${loc.lng}&zoom=12&size=${mapWidth}x${mapHeight}&markers=color:red`;
 		restaurants.forEach(restaurant => {
 			staticMap += `|${restaurant.latlng.lat},${restaurant.latlng.lng}`;
 		});
