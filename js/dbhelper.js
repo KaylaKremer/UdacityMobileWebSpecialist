@@ -203,9 +203,9 @@ class DBHelper {
 	}
 
 	/**
-   * Static map image to be displayed when page initially loads.
+   * Static map image to be displayed when index.html initially loads.
    */
-	static staticImageForMap(restaurants) {
+	static staticImageForMapIndex(restaurants) {
 		let loc = {
 			lat: 40.722216,
 			lng: -73.987501
@@ -219,6 +219,17 @@ class DBHelper {
 			staticMap += `|${restaurant.latlng.lat},${restaurant.latlng.lng}`;
 		});
 		staticMap += `&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
+		return staticMap;
+	}
+
+	/**
+   * Static map image to be displayed when restaurant.html initially loads.
+   */
+	static staticImageForMapRestaurantInfo(restaurant) {
+		const map = document.getElementById('map');
+		const mapWidth = map.clientWidth;
+		const mapHeight = map.clientHeight;
+		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
 		return staticMap;
 	}
 }

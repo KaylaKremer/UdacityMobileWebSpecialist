@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
  */
 const fetchNeighborhoods = () => {
 	DBHelper.fetchNeighborhoods((error, neighborhoods) => {
-		if (error) { // Got an error
+		if (error) { 
+			// Got an error
 			console.error(error);
 		} else {
 			self.neighborhoods = neighborhoods;
@@ -46,7 +47,8 @@ const fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  */
 const fetchCuisines = () => {
 	DBHelper.fetchCuisines((error, cuisines) => {
-		if (error) { // Got an error!
+		if (error) { 
+			// Got an error!
 			console.error(error);
 		} else {
 			self.cuisines = cuisines;
@@ -118,10 +120,10 @@ const resetRestaurants = (restaurants) => {
  * Create all restaurants HTML and add them to the webpage.
  */
 
-//If a live map isn't already enabled, removes the static map image and replaces it with a live Google Map.
+/* If a live map isn't already enabled, removes the static map image and replaces it with a live Google Map. */
 const getLiveMap = () => {
 	updateRestaurants();
-	if(liveMap === true){
+	if(liveMap){
 		return;
 	} else {
 		const staticMapImg = document.getElementById('static-map-img');
@@ -132,7 +134,7 @@ const getLiveMap = () => {
 		};
 		self.map = new google
 			.maps
-			.Map(document.getElementById("map"), {
+			.Map(document.getElementById('map'), {
 				zoom: 12,
 				center: loc,
 				scrollwheel: false
@@ -146,11 +148,12 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 	restaurants.forEach(restaurant => {
 		ul.append(createRestaurantHTML(restaurant));
 	});
-	//Loads a static map image if it's the initial page load. Adds a click event listener so that when the user clicks on the map, it removes the static map image and loads a live map in its place.
-	if (initLoad === true){
+	
+	/* Loads a static map image if it's the initial page load. Adds a click event listener so that when the user clicks on the map, it removes the static map image and loads a live map in its place. */
+	if (initLoad){
 		fetchNeighborhoods();
 		fetchCuisines();
-		const staticMap = DBHelper.staticImageForMap(self.restaurants);
+		const staticMap = DBHelper.staticImageForMapIndex(self.restaurants);
 		const map = document.getElementById('map');
 		const staticMapImg = document.createElement('img');
 		staticMapImg.id = ('static-map-img');
@@ -171,14 +174,15 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 const createRestaurantHTML = (restaurant) => {
-	// Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image.
+	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const li = document.createElement('li'); 
 	const image = document.createElement('img');
 	image.className = 'restaurant-img lazyload';
-	/* Old backup code without lazy load
+
+	/* Backup code without lazy load
 	image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
 	image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
-	image.sizes = '50vw';*/
+	image.sizes = '50vw'; */
 	image.setAttribute('data-src', `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w`);
 	image.setAttribute('data-srcset',`${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`);
 	image.setAttribute('data-sizes', 'auto');
@@ -206,8 +210,10 @@ const createRestaurantHTML = (restaurant) => {
 	const more = document.createElement('a');
 	more.innerHTML = 'View Restaurant Details';
 	more.href = DBHelper.urlForRestaurant(restaurant);
+
 	//Dynamically set title attribute
 	more.title = `${restaurant.name} - View Restaurant Details`;
+
 	//Set ARIA attributes to each restaurant link
 	more.setAttribute('role', 'button');
 	more.setAttribute('tabindex', '0');
