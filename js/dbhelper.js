@@ -24,38 +24,39 @@ class DBHelper {
 		});
 		let restaurantURL;
 		id ? restaurantURL = `${DBHelper.DATABASE_URL}/${id}` : restaurantURL = `${DBHelper.DATABASE_URL}`;
+
 		fetch(restaurantURL).then(response => {
 			if(response.ok){
 				return response.json().then(restaurantReviews => {
 					dbPromise.then(db => {
 						const tx = db.transaction('restaurant-reviews', 'readwrite');
 						let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
-						restaurantReviews.forEach(restaurantReview => {
-							restaurantReviewsStore.put(restaurantReview);
-						});
+						for (let i = 0; i < restaurantReviews.length; i++){
+							restaurantReviewsStore.put(restaurantReviews[i]);
+						}
 						return tx.complete && restaurantReviewsStore.getAll();
-					}).then(restaurantReviews => {
-						console.log(`Sucessfully fetched data from server & stored in IndexedDB!`);
-						callback(null, restaurantReviews);
+					}).then(fetchedRestaurantReviews => {
+						console.log(`Successfully fetched data from server & stored in IndexedDB!`);
+						return callback(null, fetchedRestaurantReviews);
 					}).catch(error => {
-						callback(`Failed to fetch data from server & store n IndexedDB: ${error}`, null);
+						return callback(`Failed to fetch data from server & store in IndexedDB: ${error}`, null);
 					});
 				});
-			} else {
+			}
+			else {
 				dbPromise.then(db => {
 					const tx = db.transaction('restaurant-reviews', 'readonly');
 					let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
-					//if (restaurantReviewsStores.getAll())
 					return tx.complete && restaurantReviewsStore.getAll();
-				}).then(restaurantReviews => {
-					console.log(`Sucessfully fetched data from IndexedDB!`);
-					callback(null, restaurantReviews);
+				}).then(fetchedRestaurantReviews => {
+					console.log(`Successfully fetched data from IndexedDB!`);
+					return callback(null, fetchedRestaurantReviews);
 				}).catch(error => {
-					callback(`Failed to fetch data from IndexedDB: ${error}`, null);
+					return callback(`Failed to fetch data from IndexedDB: ${error}`, null);
 				});
 			}
 		}).catch(error => {
-			callback(`Fetch request for data from server failed: ${error}`, null);
+			return callback(`Fetch request for data from server failed: ${error}`, null);
 		});
 	}
 
@@ -229,7 +230,7 @@ class DBHelper {
 		const map = document.getElementById('map');
 		const mapWidth = map.clientWidth;
 		const mapHeight = map.clientHeight;
-		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
+		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
 		return staticMap;
 	}
 }

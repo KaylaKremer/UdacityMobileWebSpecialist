@@ -1,11 +1,11 @@
 const gulp = require('gulp');
-const concat = require('gulp-concat');
 const autoprefixer = require('gulp-autoprefixer');
 const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
+//const concat = require('gulp-concat');
 //const browserify = require('browserify');
 //const babelify = require('babelify');
 //const source = require('vinyl-source-stream');
@@ -40,13 +40,7 @@ gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw
 });
 
 //For production
-gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'scripts-build', 'sw-build'], () => {
-	browserSync.init({
-		server: "./dist",
-		port: 5500,
-		reloadDelay: 1000
-	});
-});
+gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'scripts-build', 'sw-build']);
 
 gulp.task('html', () => {
 	gulp.src('./*.html')
@@ -88,22 +82,6 @@ gulp.task('lint', () => {
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
 });
-
-/*gulp.task('concat-idb-scripts', () => {
-	gulp.src(['./js/idb.js', './js/dbhelper.js'])
-		.pipe(concat('idb-bundle.js'))
-		.pipe(sourcemaps.init())
-		.pipe(babel())
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('./dist/js'));
-});
-
-gulp.task('concat-idb-scripts-build', () => {
-	gulp.src(['./js/idb.js', './js/dbhelper.js'])
-		.pipe(concat('idb-bundle.js'))
-		.pipe(babel({minified: true}))
-		.pipe(gulp.dest('./dist/js'));
-});*/
 
 gulp.task('scripts', () => {
 	gulp.src('./js/**/*.js')
@@ -156,6 +134,23 @@ gulp.task('sw-build', () => {
 		.bundle()
 		.pipe(source('./sw.js'))
 		.pipe(gulp.dest('./dist'));
+});*/
+
+//Old task runners for concat
+/*gulp.task('concat-idb-scripts', () => {
+	gulp.src(['./js/idb.js', './js/dbhelper.js'])
+		.pipe(concat('idb-bundle.js'))
+		.pipe(sourcemaps.init())
+		.pipe(babel())
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('concat-idb-scripts-build', () => {
+	gulp.src(['./js/idb.js', './js/dbhelper.js'])
+		.pipe(concat('idb-bundle.js'))
+		.pipe(babel({minified: true}))
+		.pipe(gulp.dest('./dist/js'));
 });*/
 
 

@@ -73,7 +73,8 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 		const staticMap = DBHelper.staticImageForMapRestaurantInfo(self.restaurant);
 		const map = document.getElementById('map');
 		const staticMapImg = document.createElement('img');
-		staticMapImg.id = ('static-map-img');
+		staticMapImg.id = 'static-map-img';
+		staticMapImg.alt = 'Static Google Maps image';
 		staticMapImg.style.width = `${map.clientWidth}px`;
 		staticMapImg.style.height = `${map.clientHeight}px`;
 		staticMapImg.src = staticMap;
@@ -83,7 +84,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 		map.appendChild(staticMapImg);
 		initLoad = false;
 	} else {
-		//DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
 		addMarkerToMap();
 	}
 	const name = document.getElementById('restaurant-name');
@@ -222,9 +222,8 @@ const getParameterByName = (name, url) => {
  */
 const addMarkerToMap = (restaurant = self.restaurant) => {
 	// Add marker to the map
-	const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+	const marker = DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
 	google.maps.event.addListener(marker, 'click', () => {
 		window.location.href = marker.url;
 	});
-	self.markers.push(marker);
 };

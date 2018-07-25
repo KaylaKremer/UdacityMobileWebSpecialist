@@ -156,7 +156,8 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 		const staticMap = DBHelper.staticImageForMapIndex(self.restaurants);
 		const map = document.getElementById('map');
 		const staticMapImg = document.createElement('img');
-		staticMapImg.id = ('static-map-img');
+		staticMapImg.id = 'static-map-img';
+		staticMapImg.alt = 'Static Google Maps image';
 		staticMapImg.style.width = `${map.clientWidth}px`;
 		staticMapImg.style.height = `${map.clientHeight}px`;
 		staticMapImg.src = staticMap;
