@@ -135,13 +135,14 @@ nav h1 a:hover {
 /* Add a slash symbol (/) before/behind each list item */
 #breadcrumb li+li:before {
     padding: 0 0.25rem;
-    color: black;
+    color: #000;
     content: "/\00a0";
 }
 /* Add a color to all links inside the list */
 #breadcrumb li a {
     text-transform: uppercase;
     font-weight: bold;
+    color:#000;
 }
 
 /* ====================== Map ====================== */

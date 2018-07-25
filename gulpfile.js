@@ -4,6 +4,8 @@ const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
+const gzip = require('gulp-gzip');
+const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create();
 //const concat = require('gulp-concat');
 //const browserify = require('browserify');
@@ -40,10 +42,16 @@ gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw
 });
 
 //For production
-gulp.task('build', ['html', 'images', 'manifest', 'styles-build', 'lint', 'scripts-build', 'sw-build']);
+gulp.task('build', ['html', 'html-compress', 'images', 'manifest', 'styles-build', 'styles-compress', 'lint', 'scripts-build', 'scripts-compress', 'sw-build', 'sw-compress']);
 
 gulp.task('html', () => {
 	gulp.src('./*.html')
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('html-compress', () => {
+	gulp.src('./*.html')
+		.pipe(gzip())
 		.pipe(gulp.dest('./dist'));
 });
 
@@ -76,6 +84,16 @@ gulp.task('styles-build', () => {
 		.pipe(gulp.dest('./dist/css'));
 });
 
+gulp.task('styles-compress', () => {
+	gulp.src('./css/**/*.css')
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions']
+		}))
+		.pipe(cleanCSS())
+		.pipe(gzip())
+		.pipe(gulp.dest('./dist/css'));
+});
+
 gulp.task('lint', () => {
 	return gulp.src(['./js/**/*.js', './sw.js', '!node_modules/**'])
 		.pipe(eslint())
@@ -94,6 +112,15 @@ gulp.task('scripts', () => {
 gulp.task('scripts-build', () => {
 	gulp.src('./js/**/*.js')
 		.pipe(babel({minified: true}))
+		.pipe(uglify())
+		.pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('scripts-compress', () => {
+	gulp.src('./js/**/*.js')
+		.pipe(babel({minified: true}))
+		.pipe(uglify())
+		.pipe(gzip())
 		.pipe(gulp.dest('./dist/js'));
 });
 
@@ -108,6 +135,13 @@ gulp.task('sw', () => {
 gulp.task('sw-build', () => {
 	gulp.src('./sw.js')
 		.pipe(babel({minified: true}))
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('sw-compress', () => {
+	gulp.src('./sw.js')
+		.pipe(babel({minified: true}))
+		.pipe(gzip())
 		.pipe(gulp.dest('./dist'));
 });
 

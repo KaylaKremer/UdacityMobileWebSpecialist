@@ -1,0 +1,1 @@
+"use strict";"serviceWorker"in navigator?navigator.serviceWorker.register("/sw.js",{scope:"/"}).then(function(e){console.log("ServiceWorker registration successful! "+e.scope)}).catch(function(e){console.log("ServiceWorker registration failed! "+e)}):console.log("ServiceWorker is not supported");
