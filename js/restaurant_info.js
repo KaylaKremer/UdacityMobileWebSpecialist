@@ -154,6 +154,7 @@ const fillReviewsHTML = (error, reviews) => {
 
 	if (!reviews) {
 		const noReviews = document.createElement('p');
+		noReviews.id = 'no-reviews';
 		noReviews.innerHTML = 'No reviews yet!';
 		container.insertBefore(noReviews, ul);
 	} else {
@@ -170,18 +171,28 @@ const fillReviewsHTML = (error, reviews) => {
 const createReviewHTML = (review) => {
 	const li = document.createElement('li');
 	const name = document.createElement('p');
+	name.classList.add('reviews-header');
 	name.innerHTML = review.name;
 	li.appendChild(name);
 
-	const createdAt = document.createElement('p');
-	createdAt.innerHTML = review.createdAt;
-	li.appendChild(createdAt);
+	const timestamp = document.createElement('p');
+	timestamp.classList.add('reviews-header');
+	const createdAtTimestamp = new Date(review.createdAt);
+	const updatedAtTimestamp = new Date(review.updatedAt);
+	if (createdAtTimestamp === updatedAtTimestamp){
+		timestamp.innerHTML = createdAtTimestamp.toLocaleString();
+	} else {
+		timestamp.innerHTML = updatedAtTimestamp.toLocaleString();
+	}
+	li.appendChild(timestamp);
 
-	const updatedAt = document.createElement('p');
-	updatedAt.innerHTML = review.updatedAt;
-	li.appendChild(updatedAt);
+	/*const updatedAt = document.createElement('p');
+	updatedAt.classList.add('reviews-header');
+	updatedAt.innerHTML = DBHelper.convertTimestamp(review.updatedAt);
+	li.appendChild(updatedAt);*/
 
 	const rating = document.createElement('p');
+	rating.classList.add('reviews-header');
 	rating.innerHTML = `Rating: ${review.rating}`;
 	li.appendChild(rating);
 

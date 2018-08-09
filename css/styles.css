@@ -395,6 +395,17 @@ nav h1 a:hover {
   margin: 0 0 0.8rem;
   font-size: 0.9rem;
 }
+
+.reviews-header {
+  font-weight: bold;
+  color: #207bbc;
+}
+
+#no-reviews {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
 #restaurant-hours table {
   align: center;
   margin-left: auto;
