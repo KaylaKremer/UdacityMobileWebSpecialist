@@ -1,3 +1,13 @@
+const dbPromise = idb.open('restaurant-reviews-db', 2, upgradeDB => {
+	switch (upgradeDB.oldVersion){
+	case 0:
+		upgradeDB.createObjectStore('restaurants', {keyPath: 'id'});
+	case 1:
+		const reviewsStore = upgradeDB.createObjectStore('reviews', {keyPath: 'id'});
+		reviewsStore.createIndex('restaurant_id', 'restaurant_id');
+	}
+});
+
 /**
  * Common database helper functions.
  */
@@ -5,58 +15,57 @@ class DBHelper {
 	
 	/**
    * Database URL.
-   * Changed to retrieve data from the server on localhost:1337.
+   * Changed to retrieve restaurants & reviews from server on localhost:1337.
    */
-	static get DATABASE_URL() {
+	static get DATABASE_RESTAURANTS_URL() {
 		const port = 1337; // Change this to your server port
 		return `http://localhost:${port}/restaurants`;
+	}
+
+	static get DATABASE_REVIEWS_URL() {
+		const port = 1337; // Change this to your server port
+		return `http://localhost:${port}/reviews`;
 	}
 
 	/**
    * Fetches all restaurant reviews data. Creates an IndexedDB database named 'restaurant-reviews-db' with an object store of 'restaurant-reviews'. If response from the server is ok, stores data received into the database and then returns the data. If response from the server fails, look in the database to see if there is data already stored there and return the data. Catches and handles errors appropriately when data cannot be retrieved.
    */
 	static fetchRestaurants(callback, id) {
-		const dbPromise = idb.open('restaurant-reviews-db', 1, upgradeDB => {
-			switch (upgradeDB.oldVersion){
-			case 0:
-				upgradeDB.createObjectStore('restaurant-reviews', {keyPath: 'id'});
-			}
-		});
 		let restaurantURL;
-		id ? restaurantURL = `${DBHelper.DATABASE_URL}/${id}` : restaurantURL = `${DBHelper.DATABASE_URL}`;
+		id ? restaurantURL = `${DBHelper.DATABASE_RESTAURANTS_URL}/${id}` : restaurantURL = `${DBHelper.DATABASE_RESTAURANTS_URL}`;
 
 		fetch(restaurantURL).then(response => {
 			if(response.ok){
-				return response.json().then(restaurantReviews => {
+				return response.json().then(restaurants => {
 					dbPromise.then(db => {
-						const tx = db.transaction('restaurant-reviews', 'readwrite');
-						let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
-						for (let i = 0; i < restaurantReviews.length; i++){
-							restaurantReviewsStore.put(restaurantReviews[i]);
+						const tx = db.transaction('restaurants', 'readwrite');
+						let restaurantsStore = tx.objectStore('restaurants');
+						for (let i = 0; i < restaurants.length; i++){
+							restaurantsStore.put(restaurants[i]);
 						}
-						return tx.complete && restaurantReviewsStore.getAll();
-					}).then(fetchedRestaurantReviews => {
-						console.log(`Successfully fetched data from server & stored in IndexedDB!`);
-						return callback(null, fetchedRestaurantReviews);
+						return tx.complete && restaurantsStore.getAll();
+					}).then(fetchedRestaurants => {
+						console.log(`Successfully fetched restaurants from server & stored in IndexedDB!`);
+						return callback(null, fetchedRestaurants);
 					}).catch(error => {
-						return callback(`Failed to fetch data from server & store in IndexedDB: ${error}`, null);
+						return callback(`Failed to fetch restaurants from server & store in IndexedDB: ${error}`, null);
 					});
 				});
 			}
 			else {
 				dbPromise.then(db => {
-					const tx = db.transaction('restaurant-reviews', 'readonly');
-					let restaurantReviewsStore = tx.objectStore('restaurant-reviews');
-					return tx.complete && restaurantReviewsStore.getAll();
-				}).then(fetchedRestaurantReviews => {
+					const tx = db.transaction('restaurants', 'readonly');
+					let restaurantsStore = tx.objectStore('restaurants');
+					return tx.complete && restaurantsStore.getAll();
+				}).then(fetchedRestaurants => {
 					console.log(`Successfully fetched data from IndexedDB!`);
-					return callback(null, fetchedRestaurantReviews);
+					return callback(null, fetchedRestaurants);
 				}).catch(error => {
-					return callback(`Failed to fetch data from IndexedDB: ${error}`, null);
+					return callback(`Failed to fetch restaurants from IndexedDB: ${error}`, null);
 				});
 			}
 		}).catch(error => {
-			return callback(`Fetch request for data from server failed: ${error}`, null);
+			return callback(`Fetch request for restaurants from server failed: ${error}`, null);
 		});
 	}
 
@@ -76,6 +85,48 @@ class DBHelper {
 					callback('Restaurant does not exist', null);
 				}
 			}
+		});
+	}
+
+	/**
+   * Fetch a review by its ID.
+   */
+	static fetchReviewsById(id, callback){
+		const reviewURL = `${DBHelper.DATABASE_REVIEWS_URL}/?restaurant_id=${id}`;
+		fetch(reviewURL).then(response => {
+			if(response.ok){
+				return response.json().then(reviews => {
+					dbPromise.then(db => {
+						const tx = db.transaction('reviews', 'readwrite');
+						let reviewsStore = tx.objectStore('reviews');
+						for (let i = 0; i < reviews.length; i++){
+							reviewsStore.put(reviews[i]);
+						}
+						const indexRestaurantId = reviewsStore.index('restaurant_id');
+						return tx.complete && indexRestaurantId.getAll(id);
+					}).then(fetchedReviews => {
+						console.log(`Successfully fetched reviews from server & stored in IndexedDB!`);
+						return callback(null, fetchedReviews);
+					}).catch(error => {
+						return callback(`Failed to fetch reviews from server & store in IndexedDB: ${error}`, null);
+					});
+				});
+			}
+			else {
+				dbPromise.then(db => {
+					const tx = db.transaction('reviews', 'readonly');
+					let reviewsStore = tx.objectStore('reviews');
+					const indexRestaurantId = reviewsStore.index('resataurant_id');
+					return tx.complete && indexRestaurantId.getAll(id);
+				}).then(fetchedReviews => {
+					console.log(`Successfully fetched reviews from IndexedDB!`);
+					return callback(null, fetchedReviews);
+				}).catch(error => {
+					return callback(`Failed to fetch reviews from IndexedDB: ${error}`, null);
+				});
+			}
+		}).catch(error => {
+			return callback(`Fetch request for reviews from server failed: ${error}`, null);
 		});
 	}
 

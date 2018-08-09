@@ -38,6 +38,12 @@
         ],
         "no-mixed-spaces-and-tabs": [
             "off"
+        ],
+        "no-case-declarations": [
+            "off"
+        ],
+        "no-fallthrough": [
+            "off"
         ]
     }
 }

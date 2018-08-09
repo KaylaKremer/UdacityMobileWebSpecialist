@@ -1,7 +1,7 @@
 let restaurants,
 	neighborhoods,
-	cuisines;
-let map;
+	cuisines,
+	map;
 let liveMap = false;
 let initLoad = true;
 let markers = [];
@@ -174,7 +174,7 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
-const createRestaurantHTML = (restaurant) => {
+const createRestaurantHTML = restaurant => {
 	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const li = document.createElement('li'); 
 	const image = document.createElement('img');
