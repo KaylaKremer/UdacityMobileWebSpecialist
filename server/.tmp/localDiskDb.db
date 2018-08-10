@@ -18,8 +18,8 @@
           "Wednesday": "5:30 pm - 11:00 pm",
           "Thursday": "5:30 pm - 11:00 pm",
           "Friday": "5:30 pm - 11:00 pm",
-          "Saturday": "12:00 pm - 4:00 pm, 5:30 pm - 12:00 am",
-          "Sunday": "12:00 pm - 4:00 pm, 5:30 pm - 11:00 pm"
+          "Saturday": "12:00 pm - 4:00 pm,</br> 5:30 pm - 12:00 am",
+          "Sunday": "12:00 pm - 4:00 pm,</br> 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095563444,
         "updatedAt": "2017-09-14T14:01:27.653Z",
@@ -44,7 +44,7 @@
           "Thursday": "5:30 pm - 11:00 pm",
           "Friday": "5:30 pm - 11:00 pm",
           "Saturday": "5:00 pm - 11:30 pm",
-          "Sunday": "12:00 pm - 3:00 pm, 5:00 pm - 11:00 pm"
+          "Sunday": "12:00 pm - 3:00 pm,</br> 5:00 pm - 11:00 pm"
         },
         "createdAt": 1504095568414,
         "updatedAt": "2017-09-14T14:05:54.800Z",
@@ -187,13 +187,13 @@
         },
         "cuisine_type": "American",
         "operating_hours": {
-          "Monday": "11:30 am - 3:00 pm, 5:30 pm - 11:00 pm",
-          "Tuesday": "11:30 am - 3:00 pm, 5:30 pm - 11:00 pm",
-          "Wednesday": "11:30 am - 3:00 pm, 5:30 pm - 11:00 pm",
-          "Thursday": "11:30 am - 3:00 pm, 5:30 pm - 11:00 pm",
-          "Friday": "11:30 am - 3:00 pm, 5:30 pm - 11:30 pm",
-          "Saturday": "10:00 am - 3:00 pm, 5:30 pm - 11:30 pm",
-          "Sunday": "10:00 am - 3:00 pm, 5:30 pm - 11:00 pm"
+          "Monday": "11:30 am - 3:00 pm,</br> 5:30 pm - 11:00 pm",
+          "Tuesday": "11:30 am - 3:00 pm,</br> 5:30 pm - 11:00 pm",
+          "Wednesday": "11:30 am - 3:00 pm,</br> 5:30 pm - 11:00 pm",
+          "Thursday": "11:30 am - 3:00 pm,</br> 5:30 pm - 11:00 pm",
+          "Friday": "11:30 am - 3:00 pm,</br> 5:30 pm - 11:30 pm",
+          "Saturday": "10:00 am - 3:00 pm,</br> 5:30 pm - 11:30 pm",
+          "Sunday": "10:00 am - 3:00 pm,</br> 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095567091,
         "updatedAt": 1504095567091,

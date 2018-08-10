@@ -21,10 +21,11 @@ ul, li {
 	color: #333;
 }
 a {
-	color: #207bbc;
+	color: #ccc;
 	text-decoration: none;
 }
 a:hover, a:focus {
+  color: #207bbc;
 	text-decoration: underline;
 }
 a img{
@@ -342,7 +343,9 @@ nav h1 a:hover {
   text-align: center;
   width: 100%;
 }
-#restaurant-container, #reviews-container {
+#restaurant-container, 
+#reviews-container,
+#form-container  {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 1.5rem;
@@ -401,6 +404,15 @@ nav h1 a:hover {
   color: #207bbc;
 }
 
+.reviews-score {
+  background-color: #b35f00;
+  color: #fff;
+  padding: .25rem;
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+}
+
 #no-reviews {
   font-size: 1.25rem;
   font-weight: bold;
@@ -411,10 +423,18 @@ nav h1 a:hover {
   margin-left: auto;
   margin-right: auto;
 }
-#restaurant-hours td {
+#restaurant-hours td:nth-child(odd) {
   color: #666;
   font-size: 1rem;
   text-align: left;
+  padding-right: 1rem;
+}
+
+#restaurant-hours td:nth-child(even) {
+  color: #666;
+  font-size: 1rem;
+  text-align: right;
+  padding-left: 1rem;
 }
 
 /* ====================== Media Queries ====================== */

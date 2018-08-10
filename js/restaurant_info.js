@@ -192,7 +192,7 @@ const createReviewHTML = (review) => {
 	li.appendChild(updatedAt);*/
 
 	const rating = document.createElement('p');
-	rating.classList.add('reviews-header');
+	rating.classList.add('reviews-score');
 	rating.innerHTML = `Rating: ${review.rating}`;
 	li.appendChild(rating);
 
