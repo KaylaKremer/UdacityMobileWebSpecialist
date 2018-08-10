@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#207bbc">
   <meta charset="utf-8">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="manifest" href="./manifest.json">
   <link rel="shortcut icon" href="./img/favicon.ico">
   <title>Restaurant Reviews</title>
@@ -13,7 +14,7 @@
 
 <body>
   <header role="banner">
-    <a href="#filter-results" class="skip-button" role="button" tabindex="0" title="Skip to Main Content">Skip to Main Content</a>
+    <a href="#filter-results" id="skip-button" role="button" tabindex="0" title="Skip to Main Content">Skip to Main Content</a>
     <nav role="navigation">
       <h1><a href="/" title="Restaurant Reviews">Restaurant Reviews</a></h1>
     </nav>
@@ -24,10 +25,10 @@
       <div id="map"></div>
     </section> 
     <section>
-      <div class="filter-options" id="filter-options">
-        <h2 id="filter-results">Filter Results</h2>
+      <div id="filter-options">
+        <h2 id="filter-results" tabindex="0">Filter Results</h2>
         <p id="filter-description">To filter restaurant results, select desired neighborhood and cuisine options.</p>
-        <div class="select-container" id="select-container" role="group" aria-label="Select Options" aria-describedby="filter-description" tabindex="0">
+        <div id="select-container" role="group" aria-label="Select Options" aria-describedby="filter-description" tabindex="0">
           <label for="neighborhoods-select">Select Neighborhood</label>
           <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>

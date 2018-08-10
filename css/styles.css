@@ -81,7 +81,7 @@ figure {
 
 /* ====================== Navigation ====================== */
 
-.skip-button {
+#skip-button {
   position: absolute;
   top: -50px;
   left: 0;
@@ -90,7 +90,7 @@ figure {
   padding: 0.25rem;
   z-index: 100;
 }
-.skip-button:focus {
+#skip-button:focus {
   top: 0;
   color: #fff;
   background-color: #207bbc;
@@ -160,7 +160,7 @@ nav h1 a:hover {
 
 /* ====================== Restaurant Filtering ====================== */
 
-.filter-options {
+#filter-options {
   background-color: #444;
   justify-content: center;
   padding: 0.5rem;
@@ -169,7 +169,7 @@ nav h1 a:hover {
   align-items: center;
   width: 100%;
 }
-.filter-options h2 {
+#filter-options h2 {
   color: white;
   font-size: 1.25rem;
   font-weight: normal;
@@ -178,7 +178,7 @@ nav h1 a:hover {
   flex: 0 1 100%;
   text-align: center;
 }
-.filter-options select {
+#filter-options select {
   background-color: #fff;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
@@ -190,18 +190,19 @@ nav h1 a:hover {
   flex: 1 1 200px;
   min-width: 200px;
 }
-.filter-options h2:focus,
-.filter-options div:focus,
-.filter-options select:focus {
+#filter-options h2:focus,
+#filter-options div:focus,
+#filter-options select:focus {
   outline: 0;
   box-shadow: 0 0 1px 3px rgb(32,123,188);
   border-radius: 2px;
 }
 #filter-description,
+#form-description,
 #breadcrumb-description {
   display: none;
 }
-.select-container {
+#select-container {
   display: flex;
   flex-wrap: wrap;
   max-width: 80%;
@@ -257,9 +258,6 @@ nav h1 a:hover {
   margin: 0;
   font-size: 1rem;
 }
-.restaurant-empty {
-  flex-grow: 1;
-}
 #restaurants-list li a {
   background-color: #b35f00;
   border-bottom: 3px solid #eee;
@@ -278,6 +276,9 @@ nav h1 a:hover {
 #restaurants-list li a:focus{
   background-color: #207bbc;
   text-decoration: underline;
+}
+.restaurant-empty {
+  flex-grow: 1;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -344,8 +345,7 @@ nav h1 a:hover {
   width: 100%;
 }
 #restaurant-container, 
-#reviews-container,
-#form-container  {
+#reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 1.5rem;
@@ -368,7 +368,7 @@ nav h1 a:hover {
   flex: 0 1 100%;
 }
 #reviews-list {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   padding: 0;
   width: 100%;
   min-width: 300px;
@@ -398,26 +398,30 @@ nav h1 a:hover {
   margin: 0 0 0.8rem;
   font-size: 0.9rem;
 }
-
-.reviews-header {
+.review-header {
   font-weight: bold;
   color: #207bbc;
+  font-size: 1rem;
 }
-
-.reviews-score {
+.review-rating {
   background-color: #b35f00;
   color: #fff;
-  padding: .25rem;
-  width: 25%;
+  padding: 0.5rem;
+  width: 20%;
   text-align: center;
   font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.review-rating-text {
+  visibility:hidden;
+  height: 0;
 }
 
 #no-reviews {
   font-size: 1.25rem;
   font-weight: bold;
 }
-
 #restaurant-hours table {
   align: center;
   margin-left: auto;
@@ -429,12 +433,116 @@ nav h1 a:hover {
   text-align: left;
   padding-right: 1rem;
 }
-
 #restaurant-hours td:nth-child(even) {
   color: #666;
   font-size: 1rem;
   text-align: right;
   padding-left: 1rem;
+}
+
+/* ====================== Restaurant Review Form ====================== */
+
+#form-container {
+  background-color: #444;
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid #d9d9d9;
+  border-top: 1px solid #fff;
+}
+
+#form-inputs-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 500px;
+  min-width: 200px;
+}
+
+#form-inputs-container label {
+  color: #ccc;
+}
+
+#form-title {
+  color: #ccc;
+  font-family: Arial,sans-serif;
+  font-size: 1.75rem;
+  font-weight: 300;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 1rem 0;
+  line-height: 1.1;
+  text-align: center;
+  flex: 0 1 100%;
+}
+
+#form-name,
+#form-rating {
+  background-color: #fff;
+  border: 1px solid #fff;
+  font-family: Arial,sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  text-align-last: center;
+  height: 2.5rem;
+  letter-spacing: 0;
+  margin: 0.75rem;
+  flex: 0 1 500px;
+  min-width: 200px;
+}
+
+#form-comments {
+  background-color: #fff;
+  border: 1px solid #fff;
+  font-family: Arial,sans-serif;
+  font-size: 1rem;
+  height: auto !important;
+  padding: 0.5rem;
+  text-align: center;
+  text-align-last: center;
+  letter-spacing: 0;
+  margin: 0.75rem;
+  flex: 0 1 500px;
+  min-width: 200px;
+}
+
+#form-buttons-container {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#form-submit-button,
+#form-reset-button {
+  flex: 0 0 150px;
+  min-width: 150px;
+  height: 3rem;
+  margin: 1rem;
+  font-size: 1.25rem;
+  background-color: #b35f00;
+  color: #fff;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 3px solid #555;
+  text-transform: uppercase;
+}
+
+#form-submit-button:hover,
+#form-reset-button:hover {
+  background-color: #207bbc;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#form-title:focus,
+#form-inputs-container:focus,
+#form-inputs-container select:focus {
+  outline: 0;
+  box-shadow: 0 0 1px 3px rgb(32,123,188);
+  border-radius: 2px;
 }
 
 /* ====================== Media Queries ====================== */
@@ -495,10 +603,10 @@ nav h1 a:hover {
   .inside #map {
     height: 400px;
   }
-  .filter-options h2 {
+  #filter-options h2 {
     font-size: 1.75rem;
   }
-  .filter-options select {
+  #filter-options select {
     font-size: 1.25rem;
     height: 45px;
   }

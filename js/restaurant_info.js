@@ -171,12 +171,12 @@ const fillReviewsHTML = (error, reviews) => {
 const createReviewHTML = (review) => {
 	const li = document.createElement('li');
 	const name = document.createElement('p');
-	name.classList.add('reviews-header');
+	name.classList.add('review-header');
 	name.innerHTML = review.name;
 	li.appendChild(name);
 
 	const timestamp = document.createElement('p');
-	timestamp.classList.add('reviews-header');
+	timestamp.classList.add('review-header');
 	const createdAtTimestamp = new Date(review.createdAt);
 	const updatedAtTimestamp = new Date(review.updatedAt);
 	if (createdAtTimestamp === updatedAtTimestamp){
@@ -186,14 +186,16 @@ const createReviewHTML = (review) => {
 	}
 	li.appendChild(timestamp);
 
-	/*const updatedAt = document.createElement('p');
-	updatedAt.classList.add('reviews-header');
-	updatedAt.innerHTML = DBHelper.convertTimestamp(review.updatedAt);
-	li.appendChild(updatedAt);*/
-
-	const rating = document.createElement('p');
-	rating.classList.add('reviews-score');
-	rating.innerHTML = `Rating: ${review.rating}`;
+	const rating = document.createElement('div');
+	rating.classList.add('review-rating');
+	if (review.rating > 1){
+		rating.title = `${review.rating} stars`;
+		rating.setAttribute('aria-label', `${review.rating} stars`);
+	} else {
+		rating.title = `${review.rating} star`;
+		rating.setAttribute('aria-label', `${review.rating} star`);
+	}
+	rating.innerHTML = `${review.rating} <i class="fas fa-star"></i>`;
 	li.appendChild(rating);
 
 	const comments = document.createElement('p');
