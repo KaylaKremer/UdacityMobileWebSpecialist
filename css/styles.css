@@ -312,9 +312,9 @@ nav h1 a:hover {
   letter-spacing: 0;
   margin: 1rem 0;
   text-transform: uppercase;
-  line-height: 1.1;
+  line-height: 1;
   text-align: center;
-  flex: 0 1 100%;
+  flex: 0 0 auto;
 }
 #restaurant-img {
   width: 100%;
@@ -407,7 +407,7 @@ nav h1 a:hover {
   background-color: #b35f00;
   color: #fff;
   padding: 0.5rem;
-  width: 20%;
+  width: 4rem;
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
@@ -443,7 +443,7 @@ nav h1 a:hover {
 /* ====================== Restaurant Review Form ====================== */
 
 #form-container {
-  background-color: #444;
+  background-color: #333;
   padding: 0.5rem;
   display: flex;
   flex-wrap: wrap;
@@ -453,18 +453,15 @@ nav h1 a:hover {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
 }
-
 #form-inputs-container {
   display: flex;
   flex-wrap: wrap;
   flex: 0 1 500px;
   min-width: 200px;
 }
-
 #form-inputs-container label {
   color: #ccc;
 }
-
 #form-title {
   color: #ccc;
   font-family: Arial,sans-serif;
@@ -477,7 +474,6 @@ nav h1 a:hover {
   text-align: center;
   flex: 0 1 100%;
 }
-
 #form-name,
 #form-rating {
   background-color: #fff;
@@ -492,7 +488,6 @@ nav h1 a:hover {
   flex: 0 1 500px;
   min-width: 200px;
 }
-
 #form-comments {
   background-color: #fff;
   border: 1px solid #fff;
@@ -507,7 +502,6 @@ nav h1 a:hover {
   flex: 0 1 500px;
   min-width: 200px;
 }
-
 #form-buttons-container {
   margin: 0 auto;
   display: flex;
@@ -526,23 +520,59 @@ nav h1 a:hover {
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 3px solid #555;
+  border-bottom: 3px solid #444;
   text-transform: uppercase;
 }
-
 #form-submit-button:hover,
 #form-reset-button:hover {
   background-color: #207bbc;
   text-decoration: underline;
   cursor: pointer;
 }
-
 #form-title:focus,
 #form-inputs-container:focus,
 #form-inputs-container select:focus {
   outline: 0;
   box-shadow: 0 0 1px 3px rgb(32,123,188);
   border-radius: 2px;
+}
+
+#restaurant-header {
+  flex: 0 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.restaurant-favorite-false {
+  font-size: 1.75rem;
+  flex: 0 0 auto;
+  margin: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  background-color: #333;
+  color: #ccc;
+}
+.restaurant-favorite-true {
+  font-size: 1.75rem;
+  flex: 0 0 auto;
+  margin: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  background-color: #b35f00;
+  color: #ccc;
+}
+.restaurant-favorite-false:hover,
+.restaurant-favorite-true:hover {
+  background-color: #207bbc;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* ====================== Media Queries ====================== */
@@ -582,6 +612,13 @@ nav h1 a:hover {
   #restaurant-name,
   #reviews-container h2 {
     font-size: 1.5rem;
+  }
+  .restaurant-favorite-false,
+  .restaurant-favorite-true {
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+
   }
   #restaurant-cuisine {
     font-size: 1rem;
@@ -635,6 +672,13 @@ nav h1 a:hover {
   #restaurant-name,
   #reviews-container h2 {
     font-size: 2rem;
+  }
+  .restaurant-favorite-false,
+  .restaurant-favorite-true {
+    font-size: 2rem;
+    height: 3.25rem;
+    width: 3.25rem;
+    margin: 0.25rem 0.5rem;
   }
   #restaurant-cuisine {
     font-size: 1.5rem;

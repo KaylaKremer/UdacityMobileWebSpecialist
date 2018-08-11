@@ -31,7 +31,12 @@
       <div id="map"></div>
     </section>
     <section id="restaurant-container">
-      <h2 id="restaurant-name" tabindex="0"></h2>
+      <div id="restaurant-header" tabindex="0">
+        <h2 id="restaurant-name"></h2>
+        <button type="button" class="restaurant-favorite-false" title="Add to favorites" aria-label="Add to favorites">
+          <i class="far fa-heart"></i>
+        </button>
+      </div>
       <figure role="presentation">
         <img id="restaurant-img" alt="Restaurant">
         <figcaption id="restaurant-cuisine"></figcaption>
@@ -47,9 +52,9 @@
             <p id="form-description">To add your own review, please enter your name, rating from 1 to 5 stars, and comments in this form.</p>
             <div id="form-inputs-container">
               <label for="form-name">Name</label>
-              <input type="text" id="form-name" name="name" required>
+              <input type="text" id="form-name" name="name" aria-required="true" required>
               <label for="form-rating">Rating</label>
-              <select id="form-rating" name="rating" required>
+              <select id="form-rating" name="rating" aria-required="true" required>
                 <option value="" disabled selected hidden></option>
                 <option value="1">1 star</option>
                 <option value="2">2 stars</option>
@@ -58,7 +63,7 @@
                 <option value="5">5 stars</option>
               </select>
               <label for="form-comments">Comments</label>
-              <textarea id="form-comments" name="comments" rows="10" required></textarea>
+              <textarea id="form-comments" name="comments" rows="10" aria-required="true" required></textarea>
               <div id="form-buttons-container">
                 <button id="form-reset-button" type="reset" name="reset">Reset</button>
                 <button id="form-submit-button" type="submit" name="submit" onclick="submitReview()">Submit</button>
