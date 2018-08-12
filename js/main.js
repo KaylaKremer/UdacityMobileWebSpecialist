@@ -179,11 +179,6 @@ const createRestaurantHTML = restaurant => {
 	const li = document.createElement('li'); 
 	const image = document.createElement('img');
 	image.className = 'restaurant-img lazyload';
-
-	/* Backup code without lazy load
-	image.src = DBHelper.smallImageUrlForRestaurant(restaurant);
-	image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
-	image.sizes = '50vw'; */
 	image.setAttribute('data-src', `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w`);
 	image.setAttribute('data-srcset',`${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`);
 	image.setAttribute('data-sizes', 'auto');
@@ -191,9 +186,30 @@ const createRestaurantHTML = restaurant => {
 	image.alt = `${restaurant.name} in ${restaurant.neighborhood} - ${restaurant.cuisine_type} restaurant`;
 	li.append(image);
 
+	//Create header to hold name & favorite button
+	const header = document.createElement('div');
+	header.id = "header";
+	li.append(header);
+
 	const name = document.createElement('h3');
 	name.innerHTML = restaurant.name;
-	li.append(name);
+	header.append(name);
+
+	//Create dynamic favorite button
+	const favorite = document.createElement('button');
+	favorite.type = 'button';
+	favorite.id = 'favorite-button';
+	favorite.title = 'Add to favorites';
+	favorite.setAttribute('aria-label', 'Add to favorites');
+	favorite.setAttribute('onclick', 'updateFavorite()');
+	if (restaurant.is_favorite === true){
+		favorite.className = 'index-favorite-true';
+		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+	} else {
+		favorite.className = 'index-favorite-false';
+		favorite.innerHTML = '<i class="far fa-heart"></i>';
+	}
+	header.append(favorite);
 
 	const neighborhood = document.createElement('p');
 	neighborhood.innerHTML = restaurant.neighborhood;

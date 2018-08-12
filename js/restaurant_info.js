@@ -92,14 +92,19 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	const address = document.getElementById('restaurant-address');
 	address.innerHTML = restaurant.address;
 
+	//Create dynamic favorite button
+	const favorite = document.getElementById('favorite-button');
+	if (restaurant.is_favorite === true){
+		favorite.className = 'restaurant-favorite-true';
+		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+	} else {
+		favorite.className = 'restaurant-favorite-false';
+		favorite.innerHTML = '<i class="far fa-heart"></i>';
+	}
+
 	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const image = document.getElementById('restaurant-img');
 	image.className = 'restaurant-img lazyload';
-
-	/* Backup code without lazy load
-	image.src = DBHelper.largeImageUrlForRestaurant(restaurant);
-	image.srcset = `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`;
-	image.sizes = '50vw'; */
 	image.setAttribute('data-src', `${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w`);
 	image.setAttribute('data-srcset',`${DBHelper.smallImageUrlForRestaurant(restaurant)} 400w, ${DBHelper.largeImageUrlForRestaurant(restaurant)} 800w`);
 	image.setAttribute('data-sizes', 'auto');
@@ -124,15 +129,12 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 	const hours = document.getElementById('restaurant-hours');
 	for (let key in operatingHours) {
 		const row = document.createElement('tr');
-
 		const day = document.createElement('td');
 		day.innerHTML = key;
 		row.appendChild(day);
-
 		const time = document.createElement('td');
 		time.innerHTML = operatingHours[key];
 		row.appendChild(time);
-
 		hours.appendChild(row);
 	}
 };

@@ -536,13 +536,41 @@ nav h1 a:hover {
   box-shadow: 0 0 1px 3px rgb(32,123,188);
   border-radius: 2px;
 }
-
+#header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
 #restaurant-header {
   flex: 0 0 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+.index-favorite-false {
+  font-size: 1.5rem;
+  flex: 0 0 auto;
+  margin: 0.5rem 0.1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  background-color: #333;
+  color: #ccc;
+}
+.index-favorite-true {
+  font-size: 1.5rem;
+  flex: 0 0 auto;
+  margin: 0.5rem 0.1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  background-color: #b35f00;
+  color: #fff;
 }
 .restaurant-favorite-false {
   font-size: 1.75rem;
@@ -566,11 +594,14 @@ nav h1 a:hover {
   border-radius: 50%;
   justify-content: center;
   background-color: #b35f00;
-  color: #ccc;
+  color: #fff;
 }
+.index-favorite-false:hover,
+.index-favorite-true:hover,
 .restaurant-favorite-false:hover,
 .restaurant-favorite-true:hover {
   background-color: #207bbc;
+  color: #fff;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -613,12 +644,17 @@ nav h1 a:hover {
   #reviews-container h2 {
     font-size: 1.5rem;
   }
+  .index-favorite-false,
+  .index-favorite-true {
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
   .restaurant-favorite-false,
   .restaurant-favorite-true {
     font-size: 1.5rem;
     width: 2.5rem;
     height: 2.5rem;
-
   }
   #restaurant-cuisine {
     font-size: 1rem;
@@ -672,6 +708,13 @@ nav h1 a:hover {
   #restaurant-name,
   #reviews-container h2 {
     font-size: 2rem;
+  }
+  .index-favorite-false,
+  .index-favorite-true {
+    font-size: 1.75rem;
+    width: 3rem;
+    height: 3rem;
+    margin: 0.75rem 0.1rem;
   }
   .restaurant-favorite-false,
   .restaurant-favorite-true {
