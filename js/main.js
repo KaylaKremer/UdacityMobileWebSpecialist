@@ -206,7 +206,7 @@ const createRestaurantHTML = (restaurant) => {
 		let isFavorite;
 		if(restaurant.is_favorite === 'false'){
 			isFavorite = 'true';
-			favorite.title = 'Remove favorites';
+			favorite.title = 'Remove from favorites';
 			favorite.setAttribute('aria-label', 'Remove from favorites');
 		} else {
 			isFavorite = 'false';

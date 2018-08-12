@@ -89,18 +89,25 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	const name = document.getElementById('restaurant-name');
 	name.innerHTML = restaurant.name;
 
-	const address = document.getElementById('restaurant-address');
-	address.innerHTML = restaurant.address;
-
-	//Create dynamic favorite button
+	/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
 	const favorite = document.getElementById('favorite-button');
-	if (restaurant.is_favorite){
-		favorite.className = 'restaurant-favorite-true';
-		favorite.innerHTML = '<i class="fas fa-heart"></i>';
-	} else {
-		favorite.className = 'restaurant-favorite-false';
-		favorite.innerHTML = '<i class="far fa-heart"></i>';
-	}
+	getFavoriteClass(restaurant, favorite);
+	favorite.addEventListener('click', () => {
+		let isFavorite;
+		if(restaurant.is_favorite === 'false'){
+			isFavorite = 'true';
+			favorite.title = 'Remove from favorites';
+			favorite.setAttribute('aria-label', 'Remove from favorites');
+		} else {
+			isFavorite = 'false';
+			favorite.title = 'Add to favorites';
+			favorite.setAttribute('aria-label', 'Add to favorites');
+		}
+		const restaurantId = restaurant.id;
+		DBHelper.updateFavorite(restaurantId, isFavorite);
+		restaurant.is_favorite = isFavorite;
+		getFavoriteClass(restaurant, favorite);
+	});
 
 	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const image = document.getElementById('restaurant-img');
@@ -114,12 +121,28 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	const cuisine = document.getElementById('restaurant-cuisine');
 	cuisine.innerHTML = restaurant.cuisine_type;
 
+	const address = document.getElementById('restaurant-address');
+	address.innerHTML = restaurant.address;
+
 	// fill operating hours
 	if (restaurant.operating_hours) {
 		fillRestaurantHoursHTML();
 	}
 	// fill reviews
 	DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML);
+};
+
+//Create dynamic favorite button
+const getFavoriteClass = (restaurant, favorite) => {
+	if (restaurant.is_favorite === 'true'){
+		favorite.classList.add('restaurant-favorite-true');
+		favorite.classList.remove('restaurant-favorite-false');
+		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+	} else {
+		favorite.classList.add('restaurant-favorite-false');
+		favorite.classList.remove('restaurant-favorite-true');
+		favorite.innerHTML = '<i class="far fa-heart"></i>';
+	}
 };
 
 /**

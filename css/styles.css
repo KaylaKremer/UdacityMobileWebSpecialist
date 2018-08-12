@@ -423,7 +423,6 @@ nav h1 a:hover {
   font-weight: bold;
 }
 #restaurant-hours table {
-  align: center;
   margin-left: auto;
   margin-right: auto;
 }
@@ -544,7 +543,7 @@ nav h1 a:hover {
 #restaurant-header {
   flex: 0 0 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
 }
