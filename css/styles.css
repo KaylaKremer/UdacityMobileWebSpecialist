@@ -551,7 +551,7 @@ nav h1 a:hover {
 .index-favorite-false {
   font-size: 1.5rem;
   flex: 0 0 auto;
-  margin: 0.5rem 0.1rem;
+  margin: 0.5rem 0.25rem;
   width: 2.75rem;
   height: 2.75rem;
   border: none;
@@ -563,7 +563,7 @@ nav h1 a:hover {
 .index-favorite-true {
   font-size: 1.5rem;
   flex: 0 0 auto;
-  margin: 0.5rem 0.1rem;
+  margin: 0.5rem 0.25rem;
   width: 2.75rem;
   height: 2.75rem;
   border: none;
@@ -600,9 +600,6 @@ nav h1 a:hover {
 .index-favorite-true:hover,
 .restaurant-favorite-false:hover,
 .restaurant-favorite-true:hover {
-  background-color: #207bbc;
-  color: #fff;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -714,7 +711,7 @@ nav h1 a:hover {
     font-size: 1.75rem;
     width: 3rem;
     height: 3rem;
-    margin: 0.75rem 0.1rem;
+    margin: 0.75rem 0.25rem;
   }
   .restaurant-favorite-false,
   .restaurant-favorite-true {

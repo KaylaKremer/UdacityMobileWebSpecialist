@@ -94,7 +94,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
 	//Create dynamic favorite button
 	const favorite = document.getElementById('favorite-button');
-	if (restaurant.is_favorite === true){
+	if (restaurant.is_favorite){
 		favorite.className = 'restaurant-favorite-true';
 		favorite.innerHTML = '<i class="fas fa-heart"></i>';
 	} else {

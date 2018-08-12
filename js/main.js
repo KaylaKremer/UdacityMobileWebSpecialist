@@ -174,7 +174,7 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
-const createRestaurantHTML = restaurant => {
+const createRestaurantHTML = (restaurant) => {
 	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const li = document.createElement('li'); 
 	const image = document.createElement('img');
@@ -186,7 +186,7 @@ const createRestaurantHTML = restaurant => {
 	image.alt = `${restaurant.name} in ${restaurant.neighborhood} - ${restaurant.cuisine_type} restaurant`;
 	li.append(image);
 
-	//Create header to hold name & favorite button
+	/* Creates header div to hold name & favorite button. */
 	const header = document.createElement('div');
 	header.id = "header";
 	li.append(header);
@@ -195,20 +195,29 @@ const createRestaurantHTML = restaurant => {
 	name.innerHTML = restaurant.name;
 	header.append(name);
 
-	//Create dynamic favorite button
+	/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
 	const favorite = document.createElement('button');
 	favorite.type = 'button';
 	favorite.id = 'favorite-button';
 	favorite.title = 'Add to favorites';
 	favorite.setAttribute('aria-label', 'Add to favorites');
-	favorite.setAttribute('onclick', 'updateFavorite()');
-	if (restaurant.is_favorite === true){
-		favorite.className = 'index-favorite-true';
-		favorite.innerHTML = '<i class="fas fa-heart"></i>';
-	} else {
-		favorite.className = 'index-favorite-false';
-		favorite.innerHTML = '<i class="far fa-heart"></i>';
-	}
+	getFavoriteClass(restaurant, favorite);
+	favorite.addEventListener('click', () => {
+		let isFavorite;
+		if(restaurant.is_favorite === 'false'){
+			isFavorite = 'true';
+			favorite.title = 'Remove favorites';
+			favorite.setAttribute('aria-label', 'Remove from favorites');
+		} else {
+			isFavorite = 'false';
+			favorite.title = 'Add to favorites';
+			favorite.setAttribute('aria-label', 'Add to favorites');
+		}
+		const restaurantId = restaurant.id;
+		DBHelper.updateFavorite(restaurantId, isFavorite);
+		restaurant.is_favorite = isFavorite;
+		getFavoriteClass(restaurant, favorite);
+	});
 	header.append(favorite);
 
 	const neighborhood = document.createElement('p');
@@ -219,7 +228,7 @@ const createRestaurantHTML = restaurant => {
 	address.innerHTML = restaurant.address;
 	li.append(address);
 
-	//Create empty element so flex grow can be applied and create space to vertically align View Details buttons.
+	/* Creates empty element so flex grow can be applied and create space to vertically align View Details buttons. */
 	const empty = document.createElement('p');
 	empty.className = 'restaurant-empty';
 	li.append(empty);
@@ -228,16 +237,31 @@ const createRestaurantHTML = restaurant => {
 	more.innerHTML = 'View Restaurant Details';
 	more.href = DBHelper.urlForRestaurant(restaurant);
 
-	//Dynamically set title attribute
+	/* Dynamically sets title attribute. */
 	more.title = `${restaurant.name} - View Restaurant Details`;
 
-	//Set ARIA attributes to each restaurant link
+	/* Sets ARIA attributes to each restaurant link. */
 	more.setAttribute('role', 'button');
 	more.setAttribute('tabindex', '0');
 	more.setAttribute('aria-label', 'View' + restaurant.name + 'Restaurant Details');
 	li.append(more);
 
 	return li;
+};
+
+/**
+ * Change favorite icon to appear on or off with class change.
+ */
+const getFavoriteClass = (restaurant, favorite) => {
+	if (restaurant.is_favorite === 'true'){
+		favorite.classList.add('index-favorite-true');
+		favorite.classList.remove('index-favorite-false');
+		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+	} else {
+		favorite.classList.add('index-favorite-false');
+		favorite.classList.remove('index-favorite-true');
+		favorite.innerHTML = '<i class="far fa-heart"></i>';
+	}
 };
 
 /**
@@ -253,3 +277,4 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 		self.markers.push(marker);
 	});
 };
+

@@ -284,4 +284,32 @@ class DBHelper {
 		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
 		return staticMap;
 	}
+
+	/**
+   * Updates favorite status of a restaurant when favorite icon is clicked.
+   */
+	static updateFavorite(restaurantId, isFavorite){
+		const fetchURL = `${DBHelper.DATABASE_RESTAURANTS_URL}/${restaurantId}?is_favorite=${isFavorite}`;
+		fetch(fetchURL, {method: 'PUT'}).then(response => {
+			if(response.ok){
+				dbPromise.then(db => {
+					const tx = db.transaction('restaurants', 'readwrite');
+					const restaurantsStore = tx.objectStore('restaurants');
+					restaurantsStore.get(restaurantId).then(restaurant => {
+						restaurant.is_favorite = isFavorite;
+						restaurantsStore.put(restaurant);
+						return tx.complete && restaurantsStore.get(restaurantId);
+					}).then(updatedRestaurant => {
+						console.log(`Successfully updated favorite status of ${updatedRestaurant.name}`);
+					}).catch(error => {
+						console.log(`Failed to update favorite status: ${error}`);
+					});
+				});
+			} else {
+				console.log('Do offline stuff here');
+			}
+		}).catch(error => {
+			console.log(`Fetch request for restaurants from server failed: ${error}`);
+		});
+	}
 }
