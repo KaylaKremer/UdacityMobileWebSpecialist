@@ -301,8 +301,10 @@ class DBHelper {
 						return tx.complete && restaurantsStore.get(restaurantId);
 					}).then(updatedRestaurant => {
 						console.log(`Successfully updated favorite status of ${updatedRestaurant.name}`);
+						return;
 					}).catch(error => {
 						console.log(`Failed to update favorite status: ${error}`);
+						return;
 					});
 				});
 			} else {
@@ -310,16 +312,22 @@ class DBHelper {
 			}
 		}).catch(error => {
 			console.log(`Fetch request for restaurants from server failed: ${error}`);
+			return;
 		});
 	}
 
-	static addReview(review){
-		//const offlineReview = review;
+	/**
+   * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage via storeReview.
+   */
+	static addReview(review, restaurantId, fillReviewsHTML){
+		const offlineReview = {
+			data: review
+		};
 		if (!navigator.onLine) {
-			DBHelper.storeReview(review);
+			DBHelper.storeReview(offlineReview);
 			return;
 		}
-		const fetchURL = `${DBHelper.DATABASE_RESTAURANTS_URL}`;
+		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}`;
 		const fetchOptions = {
 			method: 'POST',
 			body: JSON.stringify(review),
@@ -327,8 +335,38 @@ class DBHelper {
 				'Content-Type': 'application/json'
 			})
 		};
+
 		fetch(fetchURL, fetchOptions).then(response => {
-			
-		}
+			if(response.ok){
+				console.log('Successfully posted review to server');
+				return response.json();
+			} else {
+				console.log(`Bad response received from server: ${response}`);
+				return;
+			}
+		}).then(response => {
+			return DBHelper.fetchReviewsById(restaurantId, fillReviewsHTML);
+		}).catch(error => {
+			console.log(`Fetch request failed: ${error}`);
+			return;
+		});
+	}
+
+	static storeReview(offlineReview){
+		localStorage.setItem('reviewData', JSON.stringify(offlineReview.data));
+		window.addEventListener('online', () => {
+			let reviewData = JSON.parse(localStorage.getItem(reviewData));
+			if (reviewData !== null){
+				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
+				offlineLabels.forEach(offlineLabel => {
+					offlineLabel.remove();
+				});
+				DBHelper.addReview(reviewData);
+				localStorage.removeItem('reviewData');
+				console.log('Successfully retrieved offline review data & removed from local storage');
+			} else {
+				console.log('Failed to find offline review data in local storage');
+			}
+		});
 	}
 }

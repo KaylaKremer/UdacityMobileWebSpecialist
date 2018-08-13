@@ -175,10 +175,6 @@ const fillReviewsHTML = (error, reviews) => {
 	const container = document.getElementById('reviews-container');
 	const ul = document.getElementById('reviews-list');
 
-	const title = document.createElement('h2');
-	title.innerHTML = 'Reviews';
-	container.insertBefore(title, ul);
-
 	if (!reviews) {
 		const noReviews = document.createElement('p');
 		noReviews.id = 'no-reviews';
@@ -197,6 +193,15 @@ const fillReviewsHTML = (error, reviews) => {
  */
 const createReviewHTML = (review) => {
 	const li = document.createElement('li');
+
+	/* Create label for reviews submitted while offline. */
+	if (!navigator.onLine) {
+		const offlineLabel = document.createElement('div');
+		offlineLabel.classList.add('offline-label');
+		offlineLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit when connection is re-established`;
+		li.appendChild(offlineLabel);
+	}
+
 	const name = document.createElement('p');
 	name.classList.add('review-header');
 	name.innerHTML = review.name;
@@ -278,6 +283,9 @@ const addMarkerToMap = (restaurant = self.restaurant) => {
 	});
 };
 
+/**
+ * Add user review to the page, store in IndexedDB, and reset form.
+ */
 const submitReview = () => {
 	event.preventDefault();
 	const restaurantId = getParameterByName('id');
@@ -292,9 +300,9 @@ const submitReview = () => {
 		rating: parseInt(rating),
 		comments: comments
 	};
-	DBHelper.addReview(review);
 	const ul = document.getElementById('reviews-list');
 	ul.appendChild(createReviewHTML(review));
+	DBHelper.addReview(review, restaurantId, fillReviewsHTML);
 	document.getElementById('form').reset();
 	console.log('Your review has been submitted!');
 };
