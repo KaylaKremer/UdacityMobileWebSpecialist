@@ -29,7 +29,7 @@ const fetchRestaurantFromURL = (callback) => {
 	const id = getParameterByName('id');
 	if (!id) { 
 		// no id found in URL
-		error = 'No restaurant id in URL';
+		const error = 'No restaurant id in URL';
 		callback(error, null);
 	} else {
 		DBHelper.fetchRestaurantById(id, (error, restaurant) => {
@@ -59,7 +59,7 @@ const getLiveMap = (restaurant = self.restaurant) => {
 			.maps
 			.Map(document.getElementById('map'), {
 				zoom: 16,
-				center: self.restaurant.latlng,
+				center: restaurant.latlng,
 				scrollwheel: false
 			});
 		addMarkerToMap();
@@ -132,7 +132,9 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML);
 };
 
-//Create dynamic favorite button
+/**
+ * Change favorite icon to appear on or off with class change.
+ */
 const getFavoriteClass = (restaurant, favorite) => {
 	if (restaurant.is_favorite === 'true'){
 		favorite.classList.add('restaurant-favorite-true');
@@ -200,6 +202,7 @@ const createReviewHTML = (review) => {
 	name.innerHTML = review.name;
 	li.appendChild(name);
 
+	/* Convert timestamp from epoch time into a more readable format. */
 	const timestamp = document.createElement('p');
 	timestamp.classList.add('review-header');
 	const createdAtTimestamp = new Date(review.createdAt);
@@ -273,4 +276,25 @@ const addMarkerToMap = (restaurant = self.restaurant) => {
 	google.maps.event.addListener(marker, 'click', () => {
 		window.location.href = marker.url;
 	});
+};
+
+const submitReview = () => {
+	event.preventDefault();
+	const restaurantId = getParameterByName('id');
+	const name = document.getElementById('form-name').value;
+	const rating = document.querySelector('#form-rating option:checked').value;
+	const comments = document.getElementById('form-comments').value;
+	const review = {
+		restaurant_id: parseInt(restaurantId),
+		name: name,
+		createdAt: new Date().getTime(),
+		updatedAt: new Date().getTime(),
+		rating: parseInt(rating),
+		comments: comments
+	};
+	DBHelper.addReview(review);
+	const ul = document.getElementById('reviews-list');
+	ul.appendChild(createReviewHTML(review));
+	document.getElementById('form').reset();
+	console.log('Your review has been submitted!');
 };

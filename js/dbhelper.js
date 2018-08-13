@@ -312,4 +312,23 @@ class DBHelper {
 			console.log(`Fetch request for restaurants from server failed: ${error}`);
 		});
 	}
+
+	static addReview(review){
+		//const offlineReview = review;
+		if (!navigator.onLine) {
+			DBHelper.storeReview(review);
+			return;
+		}
+		const fetchURL = `${DBHelper.DATABASE_RESTAURANTS_URL}`;
+		const fetchOptions = {
+			method: 'POST',
+			body: JSON.stringify(review),
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		};
+		fetch(fetchURL, fetchOptions).then(response => {
+			
+		}
+	}
 }
