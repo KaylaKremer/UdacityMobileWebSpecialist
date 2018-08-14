@@ -288,7 +288,17 @@ class DBHelper {
 	/**
    * Updates favorite status of a restaurant when favorite icon is clicked.
    */
-	static updateFavorite(restaurantId, isFavorite){
+	static updateFavorite(favoriteId, restaurantId, isFavorite){
+		if (!navigator.onLine) {
+			const offlineFavorite = {
+				offlineId: `offlineFavorite-${favoriteId}`,
+				restaurantId: restaurantId,
+				status: isFavorite
+			};
+			localStorage.setItem(offlineFavorite.offlineId, JSON.stringify(offlineFavorite));
+			DBHelper.updateOfflineFavorites();
+			return;
+		}
 		const fetchURL = `${DBHelper.DATABASE_RESTAURANTS_URL}/${restaurantId}?is_favorite=${isFavorite}`;
 		fetch(fetchURL, {method: 'PUT'}).then(response => {
 			if(response.ok){
@@ -317,13 +327,34 @@ class DBHelper {
 		});
 	}
 
+	static updateOfflineFavorites(){
+		window.addEventListener('online', () => {
+			if (localStorage.length > 0){
+				for (let i = 0; i < localStorage.length; i++){
+					if(localStorage.key(i).includes('offlineFavorite')){
+						const offlineFavorite = JSON.parse(localStorage.getItem(localStorage.key(i)));
+						DBHelper.updateFavorite(null, offlineFavorite.restaurantId, offlineFavorite.status);
+						localStorage.removeItem(offlineFavorite.offlineId);
+						console.log('Successfully updated restaurant favorite satus from local storage');
+					} else {
+						return;
+					}
+				}
+				const offlineFavoriteLabel = document.querySelector('.offline-favorite-label');
+				offlineFavoriteLabel.parentNode.removeChild(offlineFavoriteLabel);
+			} else {
+				console.log('Failed to find offline favorite status data in local storage');
+			}	
+		});
+	}	
+
 	/**
    * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage and retrieved when there is a network connection via addOfflineReviews.
    */
 	static addReview(review, restaurantId, fillReviewsHTML){
 		if (!navigator.onLine) {
 			const offlineReview = {
-				offlineId: review.offline_id,
+				offlineId: `offlineReview-${review.offline_id}`,
 				restaurantId: review.restaurant_id,
 				data: review
 			};
@@ -363,14 +394,18 @@ class DBHelper {
 		window.addEventListener('online', () => {
 			if (localStorage.length > 0){
 				for (let i = 0; i < localStorage.length; i++){
-					const offlineReview = JSON.parse(localStorage.getItem(localStorage.key(i)));
-					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, callback);
-					localStorage.removeItem(offlineReview.offlineId);
-					console.log('Successfully retrieved offline review data & removed from local storage');
+					if(localStorage.key(i).includes('offlineReview')){
+						const offlineReview = JSON.parse(localStorage.getItem(localStorage.key(i)));
+						DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, callback);
+						localStorage.removeItem(offlineReview.offlineId);
+						console.log('Successfully retrieved offline review data & removed from local storage');
+					} else {
+						return;
+					}
 				}
-				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
-				offlineLabels.forEach(offlineLabel => {
-					offlineLabel.parentNode.removeChild(offlineLabel);
+				const offlineReviewLabels = Array.from(document.querySelectorAll('.offline-review-label'));
+				offlineReviewLabels.forEach(offlineReviewLabel => {
+					offlineReviewLabel.parentNode.removeChild(offlineReviewLabel);
 				});
 			} else {
 				console.log('Failed to find offline review data in local storage');
@@ -383,11 +418,10 @@ class DBHelper {
    */
 	static removeReview(reviewId, offlineId, restaurantId, fillReviewsHTML){
 		if(!navigator.onLine){
-			localStorage.removeItem(offlineId);
+			localStorage.removeItem(`offlineReview-${offlineId}`);
 			return;
 		}
 		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}/${reviewId}`;
-		console.log('reviewId', reviewId);
 		fetch(fetchURL, {method: 'DELETE'}).then(response => {
 			if(response.ok){
 				return response.json().then(reviews => {

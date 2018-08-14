@@ -438,7 +438,8 @@ nav h1 a:hover {
   text-align: right;
   padding-left: 1rem;
 }
-.offline-label {
+.offline-review-label,
+.offline-favorite-label {
   width: 100%;
   background-color: #333;
   color: #ccc;

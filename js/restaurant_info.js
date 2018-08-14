@@ -2,6 +2,8 @@ let restaurant;
 let map;
 let liveMap = false;
 let initLoad = true;
+let offlineReviewCounter = 0;
+let offlineFavoriteCounter = 0;
 
 /**
  * Initialize Google map, called from HTML.
@@ -90,6 +92,8 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	name.innerHTML = restaurant.name;
 
 	/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
+
+	//WIP
 	const favorite = document.getElementById('favorite-button');
 	getFavoriteClass(restaurant, favorite);
 	favorite.addEventListener('click', () => {
@@ -104,7 +108,20 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 			favorite.setAttribute('aria-label', 'Add to favorites');
 		}
 		const restaurantId = restaurant.id;
-		DBHelper.updateFavorite(restaurantId, isFavorite);
+		if(!navigator.onLine){
+			offlineFavoriteCounter++;
+			let favoriteId = offlineFavoriteCounter.toString();
+			if(!document.querySelector('.offline-favorite-label')){
+				const offlineFavoriteLabel = document.createElement('div');
+				offlineFavoriteLabel.classList.add('offline-favorite-label');
+				offlineFavoriteLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit favorite status when network connection is reestablished`;
+				const restaurantHeader = document.getElementById('restaurant-header');
+				restaurantHeader.parentNode.insertBefore(offlineFavoriteLabel, restaurantHeader);
+			}
+			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
+			return;
+		} 
+		DBHelper.updateFavorite(null, restaurantId, isFavorite);
 		restaurant.is_favorite = isFavorite;
 		getFavoriteClass(restaurant, favorite);
 	});
@@ -196,10 +213,10 @@ const createReviewHTML = (review) => {
 
 	/* Create label for reviews submitted while offline. */
 	if (!navigator.onLine) {
-		const offlineLabel = document.createElement('div');
-		offlineLabel.classList.add('offline-label');
-		offlineLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit review when network connection is reestablished`;
-		li.appendChild(offlineLabel);
+		const offlineReviewLabel = document.createElement('div');
+		offlineReviewLabel.classList.add('offline-review-label');
+		offlineReviewLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit review when network connection is reestablished`;
+		li.appendChild(offlineReviewLabel);
 	}
 
 	/* Create delete button to remove reviews */
@@ -254,10 +271,9 @@ const createReviewHTML = (review) => {
 /**
  * Add user review to the page, store review data in server & IndexedDB, and reset form. For offline submitted reviews, creates a counter to provide a unique ID number for each offline review saved in local storage.
  */
-let offlineCounter = 0;
 const submitReview = () => {
 	event.preventDefault();
-	offlineCounter++;
+	offlineReviewCounter++;
 	const restaurantId = getParameterByName('id');
 	const name = document.getElementById('form-name').value;
 	const rating = document.querySelector('#form-rating option:checked').value;
@@ -269,7 +285,7 @@ const submitReview = () => {
 		updatedAt: new Date().getTime(),
 		rating: parseInt(rating),
 		comments: comments,
-		offline_id: offlineCounter.toString(),
+		offline_id: offlineReviewCounter.toString(),
 	};
 	const reviewsList = document.getElementById('reviews-list');
 	reviewsList.appendChild(createReviewHTML(review));
