@@ -252,7 +252,7 @@ const createReviewHTML = (review) => {
 };
 
 /**
- * Add user review to the page, store review data in server & IndexedDB, and reset form.
+ * Add user review to the page, store review data in server & IndexedDB, and reset form. For offline submitted reviews, creates a counter to provide a unique ID number for each offline review saved in local storage.
  */
 let offlineCounter = 0;
 const submitReview = () => {
@@ -263,13 +263,13 @@ const submitReview = () => {
 	const rating = document.querySelector('#form-rating option:checked').value;
 	const comments = document.getElementById('form-comments').value;
 	const review = {
-		offline_id: offlineCounter.toString(),
 		restaurant_id: parseInt(restaurantId),
 		name: name,
 		createdAt: new Date().getTime(),
 		updatedAt: new Date().getTime(),
 		rating: parseInt(rating),
-		comments: comments
+		comments: comments,
+		offline_id: offlineCounter.toString(),
 	};
 	const reviewsList = document.getElementById('reviews-list');
 	reviewsList.appendChild(createReviewHTML(review));

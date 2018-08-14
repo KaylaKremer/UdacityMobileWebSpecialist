@@ -318,19 +318,18 @@ class DBHelper {
 	}
 
 	/**
-   * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage via storeOfflineReview.
+   * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage and retrieved when there is a network connection via addOfflineReviews.
    */
 	static addReview(review, restaurantId, fillReviewsHTML){
 		if (!navigator.onLine) {
 			const offlineReview = {
 				offlineId: review.offline_id,
 				restaurantId: review.restaurant_id,
-				data: review,
-				callback: fillReviewsHTML
+				data: review
 			};
-			console.log('This is the offline review object', offlineReview);
 			localStorage.setItem(offlineReview.offlineId, JSON.stringify(offlineReview));
-			DBHelper.storedOfflineReviews();
+			const callback = fillReviewsHTML;
+			DBHelper.addOfflineReviews(callback);
 			return;
 		}
 		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}`;
@@ -390,20 +389,22 @@ class DBHelper {
 		});
 	}
 
-	static storedOfflineReviews(){
-		//WIP
+	/**
+   * Listens for network connection and if it occurs and local storage contains offline reviews, retrieve each review and add it to the server and IndexedDB via addReview. Then delete each stored offline review in local storage and remove offline labels from these reviews in front end to indicate to user they have been submitted.
+   */
+	static addOfflineReviews(callback){
 		window.addEventListener('online', () => {
 			if (localStorage.length > 0){
+				for (let i = 0; i < localStorage.length; i++){
+					const offlineReview = JSON.parse(localStorage.getItem(localStorage.key(i)));
+					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, callback);
+					localStorage.removeItem(offlineReview.offlineId);
+					console.log('Successfully retrieved offline review data & removed from local storage');
+				}
 				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
 				offlineLabels.forEach(offlineLabel => {
 					offlineLabel.parentNode.removeChild(offlineLabel);
 				});
-				for (let i = 0; i < localStorage.length; i++){
-					const offlineReview = JSON.parse(localStorage.getItem()[i]);
-					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, offlineReview.callback);
-					localStorage.removeItem(`${offlineReview.offlineId}`);
-					console.log('Successfully retrieved offline review data & removed from local storage');
-				}
 			} else {
 				console.log('Failed to find offline review data in local storage');
 			}	
