@@ -323,12 +323,13 @@ class DBHelper {
 	static addReview(review, restaurantId, fillReviewsHTML){
 		if (!navigator.onLine) {
 			const offlineReview = {
-				id: review.id,
-				restaurantId: restaurantId,
+				offlineId: review.offline_id,
+				restaurantId: review.restaurant_id,
 				data: review,
 				callback: fillReviewsHTML
 			};
-			localStorage.setItem(`${offlineReview.id}`, JSON.stringify(offlineReview.data));
+			console.log('This is the offline review object', offlineReview);
+			localStorage.setItem(offlineReview.offlineId, JSON.stringify(offlineReview));
 			DBHelper.storedOfflineReviews();
 			return;
 		}
@@ -359,9 +360,9 @@ class DBHelper {
 	/**
    * If online, deletes review from server & IndexedDB. If offline, removes from local storage.
    */
-	static removeReview(reviewId, restaurantId, fillReviewsHTML){
+	static removeReview(reviewId, offlineId, restaurantId, fillReviewsHTML){
 		if(!navigator.onLine){
-			localStorage.removeItem('reviewData');
+			localStorage.removeItem(offlineId);
 			return;
 		}
 		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}/${reviewId}`;
@@ -398,9 +399,9 @@ class DBHelper {
 					offlineLabel.parentNode.removeChild(offlineLabel);
 				});
 				for (let i = 0; i < localStorage.length; i++){
-					const offlineReview = JSON.parse(localStorage.getItem('id')[i]);
+					const offlineReview = JSON.parse(localStorage.getItem()[i]);
 					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, offlineReview.callback);
-					localStorage.removeItem(`${offlineReview.id}`);
+					localStorage.removeItem(`${offlineReview.offlineId}`);
 					console.log('Successfully retrieved offline review data & removed from local storage');
 				}
 			} else {

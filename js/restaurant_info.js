@@ -254,13 +254,16 @@ const createReviewHTML = (review) => {
 /**
  * Add user review to the page, store review data in server & IndexedDB, and reset form.
  */
+let offlineCounter = 0;
 const submitReview = () => {
 	event.preventDefault();
+	offlineCounter++;
 	const restaurantId = getParameterByName('id');
 	const name = document.getElementById('form-name').value;
 	const rating = document.querySelector('#form-rating option:checked').value;
 	const comments = document.getElementById('form-comments').value;
 	const review = {
+		offline_id: offlineCounter.toString(),
 		restaurant_id: parseInt(restaurantId),
 		name: name,
 		createdAt: new Date().getTime(),
@@ -285,8 +288,9 @@ const submitReview = () => {
 const deleteReview = (deleteButton, review) => {
 	const reviewToDelete = deleteButton.parentNode;
 	const reviewId = review.id;
+	const offlineId = review.offline_id;
 	const restaurantId = getParameterByName('id');
-	DBHelper.removeReview(reviewId, restaurantId, fillReviewsHTML);
+	DBHelper.removeReview(reviewId, offlineId, restaurantId, fillReviewsHTML);
 	const reviewsList = document.getElementById('reviews-list');
 	reviewsList.removeChild(reviewToDelete);
 };
