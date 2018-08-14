@@ -173,18 +173,18 @@ const fillReviewsHTML = (error, reviews) => {
 	}
 	self.restaurant.reviews = reviews;
 	const container = document.getElementById('reviews-container');
-	const ul = document.getElementById('reviews-list');
-
+	const reviewsList = document.getElementById('reviews-list');
+	reviewsList.innerHTML = '';
 	if (!reviews) {
 		const noReviews = document.createElement('p');
 		noReviews.id = 'no-reviews';
 		noReviews.innerHTML = 'No reviews yet!';
-		container.insertBefore(noReviews, ul);
+		container.insertBefore(noReviews, reviewsList);
 	} else {
 		reviews.forEach(review => {
-			ul.appendChild(createReviewHTML(review));
+			reviewsList.appendChild(createReviewHTML(review));
 		});
-		container.appendChild(ul);
+		container.appendChild(reviewsList);
 	}
 };
 
@@ -201,6 +201,19 @@ const createReviewHTML = (review) => {
 		offlineLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit review when network connection is reestablished`;
 		li.appendChild(offlineLabel);
 	}
+
+	/* Create delete button to remove reviews */
+	const deleteButton = document.createElement('button');
+	deleteButton.type = 'button';
+	deleteButton.classList.add('delete-button');
+	deleteButton.title = 'Delete review';
+	deleteButton.setAttribute('aria-label', 'Delete review');
+	deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+	li.appendChild(deleteButton);
+	deleteButton.addEventListener('click', event => {
+		event.preventDefault();
+		deleteReview(deleteButton, review);
+	});
 
 	const name = document.createElement('p');
 	name.classList.add('review-header');
@@ -255,15 +268,24 @@ const submitReview = () => {
 		rating: parseInt(rating),
 		comments: comments
 	};
-	const ul = document.getElementById('reviews-list');
-	ul.appendChild(createReviewHTML(review));
+	const reviewsList = document.getElementById('reviews-list');
+	reviewsList.appendChild(createReviewHTML(review));
 	DBHelper.addReview(review, restaurantId, fillReviewsHTML);
 	document.getElementById('form').reset();
 	if(!navigator.onLine){
-		console.log('Your review will be submitted when an online connection is re-established');
+		console.log('Your review will be submitted when an online connection is reestablished');
 	} else {
 		console.log('Your review has been submitted!');
 	}
+};
+
+const deleteReview = (deleteButton, review) => {
+	const reviewToDelete = deleteButton.parentNode;
+	const reviewId = review.id;
+	const restaurantId = getParameterByName('id');
+	DBHelper.removeReview(reviewId, restaurantId, fillReviewsHTML);
+	const reviewsList = document.getElementById('reviews-list');
+	reviewsList.removeChild(reviewToDelete);
 };
 
 /**

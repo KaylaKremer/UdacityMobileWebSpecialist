@@ -93,7 +93,7 @@ class DBHelper {
    */
 	static fetchReviewsById(id, callback){
 		const reviewURL = `${DBHelper.DATABASE_REVIEWS_URL}/?restaurant_id=${id}`;
-		fetch(reviewURL).then(response => {
+		fetch(reviewURL, {method: 'GET'}).then(response => {
 			if(response.ok){
 				return response.json().then(reviews => {
 					dbPromise.then(db => {
@@ -103,7 +103,7 @@ class DBHelper {
 							reviewsStore.put(reviews[i]);
 						}
 						const indexRestaurantId = reviewsStore.index('restaurant_id');
-						return tx.complete && indexRestaurantId.getAll(id);
+						return tx.complete && indexRestaurantId.getAll(parseInt(id));
 					}).then(fetchedReviews => {
 						console.log(`Successfully fetched reviews from server & stored in IndexedDB!`);
 						return callback(null, fetchedReviews);
@@ -342,7 +342,40 @@ class DBHelper {
 				console.log('Successfully posted review to server');
 				return response.json();
 			} else {
-				console.log(`Bad response received from server: ${response}`);
+				console.log(`Bad response received from server: ${response.status}`);
+				return;
+			}
+		}).then(response => {
+			return DBHelper.fetchReviewsById(restaurantId, fillReviewsHTML);
+		}).catch(error => {
+			console.log(`Fetch request failed: ${error}`);
+			return;
+		});
+	}
+
+	/**
+   * If online, deletes review from server & IndexedDB. If offline, removes from local storage.
+   */
+	static removeReview(reviewId, restaurantId, fillReviewsHTML){
+		if(!navigator.onLine){
+			localStorage.removeItem('reviewData');
+			return;
+		}
+		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}/${reviewId}`;
+		console.log('reviewId', reviewId);
+		fetch(fetchURL, {method: 'DELETE'}).then(response => {
+			if(response.ok){
+				return response.json().then(reviews => {
+					dbPromise.then(db => {
+						const tx = db.transaction('reviews', 'readwrite');
+						let reviewsStore = tx.objectStore('reviews');
+						reviewsStore.delete(reviewId);
+						console.log('Successfully deleted review from server and IndexedDB');
+						return tx.complete;
+					});
+				}); 
+			} else {
+				console.log(`Bad response received from server: ${response.status}`);
 				return;
 			}
 		}).then(response => {
@@ -370,4 +403,6 @@ class DBHelper {
 			}
 		});
 	}
+
+	
 }

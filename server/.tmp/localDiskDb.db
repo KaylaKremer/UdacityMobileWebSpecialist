@@ -22,7 +22,7 @@
           "Sunday": "12:00 pm - 4:00 pm,</br> 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095563444,
-        "updatedAt": "2018-08-13T05:46:12.011Z",
+        "updatedAt": "2018-08-14T04:07:42.928Z",
         "is_favorite": "false",
         "id": 1
       },
@@ -47,7 +47,7 @@
           "Sunday": "12:00 pm - 3:00 pm,</br> 5:00 pm - 11:00 pm"
         },
         "createdAt": 1504095568414,
-        "updatedAt": "2018-08-12T18:39:09.212Z",
+        "updatedAt": "2018-08-14T03:46:22.853Z",
         "is_favorite": "false",
         "id": 2
       },
@@ -522,42 +522,6 @@
         "rating": 4,
         "comments": "For a Michelin star restaurant, it's fairly priced and the food is fairly good. Started with a strawberry margarita which was good in flavor but not much alcohol. Had the chicken enchiladas with salsa verde and it was really good. Great balance in flavor and a good portion. Extra tasty with their hot sauces. My wife had the lamb but it was a bit too salty for our taste. Although, it was cooked very well and fell off the bone. The highlight of the night was the tres leches cake. Probably the best I've ever had to be honest. Not too sweet and very milky. Overall, one of my top 3 favorite Mexican in NY.",
         "id": 30
-      },
-      {
-        "restaurant_id": 1,
-        "name": "Kayla",
-        "createdAt": 1534207640690,
-        "updatedAt": 1534207640690,
-        "rating": 5,
-        "comments": "This is my restaurant honest review",
-        "id": 31
-      },
-      {
-        "restaurant_id": 1,
-        "name": "Aki",
-        "createdAt": 1534207729155,
-        "updatedAt": 1534207729155,
-        "rating": 4,
-        "comments": "wakaranai",
-        "id": 32
-      },
-      {
-        "restaurant_id": 2,
-        "name": "Kayla",
-        "createdAt": 1534208795853,
-        "updatedAt": 1534208795853,
-        "rating": 4,
-        "comments": "hello",
-        "id": 33
-      },
-      {
-        "restaurant_id": 2,
-        "name": "Aki",
-        "createdAt": 1534208846009,
-        "updatedAt": 1534208846009,
-        "rating": 2,
-        "comments": "konnichiwa",
-        "id": 34
       }
     ]
   },
@@ -613,7 +577,7 @@
       "id": 10
     },
     "reviews": {
-      "id": 34
+      "id": 38
     }
   }
 }
