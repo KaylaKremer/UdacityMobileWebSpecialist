@@ -308,6 +308,7 @@ class DBHelper {
 					});
 				});
 			} else {
+				//WIP
 				console.log('Do offline stuff here');
 			}
 		}).catch(error => {
@@ -322,11 +323,13 @@ class DBHelper {
 	static addReview(review, restaurantId, fillReviewsHTML){
 		if (!navigator.onLine) {
 			const offlineReview = {
+				id: review.id,
+				restaurantId: restaurantId,
 				data: review,
-				id: restaurantId,
 				callback: fillReviewsHTML
 			};
-			DBHelper.storeOfflineReview(offlineReview);
+			localStorage.setItem(`${offlineReview.id}`, JSON.stringify(offlineReview.data));
+			DBHelper.storedOfflineReviews();
 			return;
 		}
 		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}`;
@@ -386,23 +389,23 @@ class DBHelper {
 		});
 	}
 
-	static storeOfflineReview(offlineReview){
-		localStorage.setItem('reviewData', JSON.stringify(offlineReview.data));
+	static storedOfflineReviews(){
+		//WIP
 		window.addEventListener('online', () => {
-			let reviewData = JSON.parse(localStorage.getItem('reviewData'));
-			if (reviewData !== null){
+			if (localStorage.length > 0){
 				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
 				offlineLabels.forEach(offlineLabel => {
 					offlineLabel.parentNode.removeChild(offlineLabel);
 				});
-				DBHelper.addReview(offlineReview.data, offlineReview.id, offlineReview.callback);
-				localStorage.removeItem('reviewData');
-				console.log('Successfully retrieved offline review data & removed from local storage');
+				for (let i = 0; i < localStorage.length; i++){
+					const offlineReview = JSON.parse(localStorage.getItem('id')[i]);
+					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, offlineReview.callback);
+					localStorage.removeItem(`${offlineReview.id}`);
+					console.log('Successfully retrieved offline review data & removed from local storage');
+				}
 			} else {
 				console.log('Failed to find offline review data in local storage');
-			}
+			}	
 		});
-	}
-
-	
+	}	
 }

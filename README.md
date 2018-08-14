@@ -2,15 +2,12 @@
 ---
 #### Three Stage Course Material Project - Restaurant Reviews
 
-## :fork_and_knife: Project Overview: Stage 2 :fork_and_knife:
+## :fork_and_knife: Project Overview: Stage 3 :fork_and_knife:
 
-#### To Udacity Grader: Please use my included server files, located in ./server. I have modified the JSON data format it serves with Sails.js to work with my repo specifically! Also, please note that I have changed the Google maps to be static images when pages first load. You can change it back to a live map by clicking on it. 
+#### To Udacity Grader: Please use my included server files, located in ./server! I have modified the JSON data format inlocalDiskDb.db to work with my repo specifically! Also, please note that I have changed Google maps to be static images when pages first load. You can change it back to a live map by clicking on it. Extra features have also been added, such as the ability to delete restaurant reviews.
 
-Resources I utilized to complete Stage 2:
-* [Project 2 MWS Webinar with Doug Brown](https://www.youtube.com/watch?v=Q2CJYf_XA58)
-* [Optimize CSS Delivery](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)
-* [Google Maps Static API](https://developers.google.com/maps/documentation/maps-static/dev-guide)
-* [lazysizes.js](https://github.com/aFarkas/lazysizes)
+Resources I referenced to complete Stage 3:
+* [Webinar MWS PWA Stage 3 with Elisa Romondia & Lorenzo Zaccagnini](https://www.youtube.com/watch?v=XbCwxeCqxw4)
 
 
 

@@ -252,7 +252,7 @@ const createReviewHTML = (review) => {
 };
 
 /**
- * Add user review to the page, store in IndexedDB, and reset form.
+ * Add user review to the page, store review data in server & IndexedDB, and reset form.
  */
 const submitReview = () => {
 	event.preventDefault();
@@ -279,6 +279,9 @@ const submitReview = () => {
 	}
 };
 
+/**
+ * Delete user review from the page and remove review data from server & IndexedDB.
+ */
 const deleteReview = (deleteButton, review) => {
 	const reviewToDelete = deleteButton.parentNode;
 	const reviewId = review.id;
