@@ -624,6 +624,7 @@ nav h1 a:hover {
 .restaurant-favorite-false:hover,
 .restaurant-favorite-true:hover {
   cursor: pointer;
+  border: 3px solid #207bbc;
 }
 
 /* ====================== Media Queries ====================== */

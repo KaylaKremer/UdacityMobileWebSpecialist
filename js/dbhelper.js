@@ -308,8 +308,8 @@ class DBHelper {
 					});
 				});
 			} else {
-				//WIP
-				console.log('Do offline stuff here');
+				console.log(`Bad response received from server: ${response.status}`);
+				return;
 			}
 		}).catch(error => {
 			console.log(`Fetch request for restaurants from server failed: ${error}`);
@@ -357,6 +357,28 @@ class DBHelper {
 	}
 
 	/**
+   * Listens for network connection and if it occurs and local storage contains offline reviews, retrieve each review and add it to the server and IndexedDB via addReview. Then delete each stored offline review in local storage and remove offline labels from these reviews in UI to indicate to user they have been submitted.
+   */
+	static addOfflineReviews(callback){
+		window.addEventListener('online', () => {
+			if (localStorage.length > 0){
+				for (let i = 0; i < localStorage.length; i++){
+					const offlineReview = JSON.parse(localStorage.getItem(localStorage.key(i)));
+					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, callback);
+					localStorage.removeItem(offlineReview.offlineId);
+					console.log('Successfully retrieved offline review data & removed from local storage');
+				}
+				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
+				offlineLabels.forEach(offlineLabel => {
+					offlineLabel.parentNode.removeChild(offlineLabel);
+				});
+			} else {
+				console.log('Failed to find offline review data in local storage');
+			}	
+		});
+	}	
+
+	/**
    * If online, deletes review from server & IndexedDB. If offline, removes from local storage.
    */
 	static removeReview(reviewId, offlineId, restaurantId, fillReviewsHTML){
@@ -388,26 +410,4 @@ class DBHelper {
 			return;
 		});
 	}
-
-	/**
-   * Listens for network connection and if it occurs and local storage contains offline reviews, retrieve each review and add it to the server and IndexedDB via addReview. Then delete each stored offline review in local storage and remove offline labels from these reviews in front end to indicate to user they have been submitted.
-   */
-	static addOfflineReviews(callback){
-		window.addEventListener('online', () => {
-			if (localStorage.length > 0){
-				for (let i = 0; i < localStorage.length; i++){
-					const offlineReview = JSON.parse(localStorage.getItem(localStorage.key(i)));
-					DBHelper.addReview(offlineReview.data, offlineReview.restaurantId, callback);
-					localStorage.removeItem(offlineReview.offlineId);
-					console.log('Successfully retrieved offline review data & removed from local storage');
-				}
-				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
-				offlineLabels.forEach(offlineLabel => {
-					offlineLabel.parentNode.removeChild(offlineLabel);
-				});
-			} else {
-				console.log('Failed to find offline review data in local storage');
-			}	
-		});
-	}	
 }

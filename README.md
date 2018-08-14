@@ -8,6 +8,7 @@
 
 Resources I referenced to complete Stage 3:
 * [Webinar MWS PWA Stage 3 with Elisa Romondia & Lorenzo Zaccagnini](https://www.youtube.com/watch?v=XbCwxeCqxw4)
+* [window.localStorage - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
 
 
