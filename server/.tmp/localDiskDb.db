@@ -526,20 +526,38 @@
       {
         "restaurant_id": 1,
         "name": "Kayla",
-        "createdAt": 1534139831808,
-        "updatedAt": 1534139831808,
-        "rating": 3,
-        "comments": "Test review",
+        "createdAt": 1534207640690,
+        "updatedAt": 1534207640690,
+        "rating": 5,
+        "comments": "This is my restaurant honest review",
         "id": 31
       },
       {
         "restaurant_id": 1,
-        "name": "Stevie",
-        "createdAt": 1534140809587,
-        "updatedAt": 1534140809587,
+        "name": "Aki",
+        "createdAt": 1534207729155,
+        "updatedAt": 1534207729155,
         "rating": 4,
-        "comments": "ok",
+        "comments": "wakaranai",
         "id": 32
+      },
+      {
+        "restaurant_id": 2,
+        "name": "Kayla",
+        "createdAt": 1534208795853,
+        "updatedAt": 1534208795853,
+        "rating": 4,
+        "comments": "hello",
+        "id": 33
+      },
+      {
+        "restaurant_id": 2,
+        "name": "Aki",
+        "createdAt": 1534208846009,
+        "updatedAt": 1534208846009,
+        "rating": 2,
+        "comments": "konnichiwa",
+        "id": 34
       }
     ]
   },
@@ -595,7 +613,7 @@
       "id": 10
     },
     "reviews": {
-      "id": 32
+      "id": 34
     }
   }
 }

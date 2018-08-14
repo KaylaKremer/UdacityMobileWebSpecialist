@@ -198,7 +198,7 @@ const createReviewHTML = (review) => {
 	if (!navigator.onLine) {
 		const offlineLabel = document.createElement('div');
 		offlineLabel.classList.add('offline-label');
-		offlineLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit when connection is re-established`;
+		offlineLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit review when network connection is reestablished`;
 		li.appendChild(offlineLabel);
 	}
 
@@ -239,9 +239,37 @@ const createReviewHTML = (review) => {
 };
 
 /**
+ * Add user review to the page, store in IndexedDB, and reset form.
+ */
+const submitReview = () => {
+	event.preventDefault();
+	const restaurantId = getParameterByName('id');
+	const name = document.getElementById('form-name').value;
+	const rating = document.querySelector('#form-rating option:checked').value;
+	const comments = document.getElementById('form-comments').value;
+	const review = {
+		restaurant_id: parseInt(restaurantId),
+		name: name,
+		createdAt: new Date().getTime(),
+		updatedAt: new Date().getTime(),
+		rating: parseInt(rating),
+		comments: comments
+	};
+	const ul = document.getElementById('reviews-list');
+	ul.appendChild(createReviewHTML(review));
+	DBHelper.addReview(review, restaurantId, fillReviewsHTML);
+	document.getElementById('form').reset();
+	if(!navigator.onLine){
+		console.log('Your review will be submitted when an online connection is re-established');
+	} else {
+		console.log('Your review has been submitted!');
+	}
+};
+
+/**
  * Add restaurant name to the breadcrumb navigation menu
  */
-const fillBreadcrumb = (restaurant=self.restaurant) => {
+const fillBreadcrumb = (restaurant = self.restaurant) => {
 	const breadcrumb = document.getElementById('breadcrumb');
 	const li = document.createElement('li');
 	li.innerHTML = restaurant.name;
@@ -277,32 +305,9 @@ const getParameterByName = (name, url) => {
  */
 const addMarkerToMap = (restaurant = self.restaurant) => {
 	// Add marker to the map
-	const marker = DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+	const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
 	google.maps.event.addListener(marker, 'click', () => {
 		window.location.href = marker.url;
 	});
 };
 
-/**
- * Add user review to the page, store in IndexedDB, and reset form.
- */
-const submitReview = () => {
-	event.preventDefault();
-	const restaurantId = getParameterByName('id');
-	const name = document.getElementById('form-name').value;
-	const rating = document.querySelector('#form-rating option:checked').value;
-	const comments = document.getElementById('form-comments').value;
-	const review = {
-		restaurant_id: parseInt(restaurantId),
-		name: name,
-		createdAt: new Date().getTime(),
-		updatedAt: new Date().getTime(),
-		rating: parseInt(rating),
-		comments: comments
-	};
-	const ul = document.getElementById('reviews-list');
-	ul.appendChild(createReviewHTML(review));
-	DBHelper.addReview(review, restaurantId, fillReviewsHTML);
-	document.getElementById('form').reset();
-	console.log('Your review has been submitted!');
-};

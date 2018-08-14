@@ -317,14 +317,16 @@ class DBHelper {
 	}
 
 	/**
-   * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage via storeReview.
+   * If online, posts review to server & IndexedDB. If offline, creates an offline review object to be stored in local storage via storeOfflineReview.
    */
 	static addReview(review, restaurantId, fillReviewsHTML){
-		const offlineReview = {
-			data: review
-		};
 		if (!navigator.onLine) {
-			DBHelper.storeReview(offlineReview);
+			const offlineReview = {
+				data: review,
+				id: restaurantId,
+				callback: fillReviewsHTML
+			};
+			DBHelper.storeOfflineReview(offlineReview);
 			return;
 		}
 		const fetchURL = `${DBHelper.DATABASE_REVIEWS_URL}`;
@@ -335,7 +337,6 @@ class DBHelper {
 				'Content-Type': 'application/json'
 			})
 		};
-
 		fetch(fetchURL, fetchOptions).then(response => {
 			if(response.ok){
 				console.log('Successfully posted review to server');
@@ -352,16 +353,16 @@ class DBHelper {
 		});
 	}
 
-	static storeReview(offlineReview){
+	static storeOfflineReview(offlineReview){
 		localStorage.setItem('reviewData', JSON.stringify(offlineReview.data));
 		window.addEventListener('online', () => {
-			let reviewData = JSON.parse(localStorage.getItem(reviewData));
+			let reviewData = JSON.parse(localStorage.getItem('reviewData'));
 			if (reviewData !== null){
 				const offlineLabels = Array.from(document.querySelectorAll('.offline-label'));
 				offlineLabels.forEach(offlineLabel => {
-					offlineLabel.remove();
+					offlineLabel.parentNode.removeChild(offlineLabel);
 				});
-				DBHelper.addReview(reviewData);
+				DBHelper.addReview(offlineReview.data, offlineReview.id, offlineReview.callback);
 				localStorage.removeItem('reviewData');
 				console.log('Successfully retrieved offline review data & removed from local storage');
 			} else {
