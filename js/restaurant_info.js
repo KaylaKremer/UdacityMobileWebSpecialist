@@ -91,40 +91,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	const name = document.getElementById('restaurant-name');
 	name.innerHTML = restaurant.name;
 
-	/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
-
-	//WIP
-	const favorite = document.getElementById('favorite-button');
-	getFavoriteClass(restaurant, favorite);
-	favorite.addEventListener('click', () => {
-		let isFavorite;
-		if(restaurant.is_favorite === 'false'){
-			isFavorite = 'true';
-			favorite.title = 'Remove from favorites';
-			favorite.setAttribute('aria-label', 'Remove from favorites');
-		} else {
-			isFavorite = 'false';
-			favorite.title = 'Add to favorites';
-			favorite.setAttribute('aria-label', 'Add to favorites');
-		}
-		const restaurantId = restaurant.id;
-		if(!navigator.onLine){
-			offlineFavoriteCounter++;
-			let favoriteId = offlineFavoriteCounter.toString();
-			if(!document.querySelector('.offline-favorite-label')){
-				const offlineFavoriteLabel = document.createElement('div');
-				offlineFavoriteLabel.classList.add('offline-favorite-label');
-				offlineFavoriteLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit favorite status when network connection is reestablished`;
-				const restaurantHeader = document.getElementById('restaurant-header');
-				restaurantHeader.parentNode.insertBefore(offlineFavoriteLabel, restaurantHeader);
-			}
-			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
-			return;
-		} 
-		DBHelper.updateFavorite(null, restaurantId, isFavorite);
-		restaurant.is_favorite = isFavorite;
-		getFavoriteClass(restaurant, favorite);
-	});
+	createFavoriteButton(restaurant);
 
 	/* Lazy loads small or large version of restaurant image based on data-srcset and auto data-sizes. Also dynamically sets alt and title text of the image. */
 	const image = document.getElementById('restaurant-img');
@@ -149,10 +116,51 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML);
 };
 
+/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
+const createFavoriteButton = (restaurant) => {
+	const favorite = document.getElementById('favorite-button');
+	getFavoriteButtonClass(restaurant, favorite);
+
+	favorite.addEventListener('click', () => {
+		const restaurantId = restaurant.id;
+		let isFavorite;
+
+		if(restaurant.is_favorite === 'false'){
+			isFavorite = 'true';
+			favorite.title = 'Remove from favorites';
+			favorite.setAttribute('aria-label', 'Remove from favorites');
+		} else {
+			isFavorite = 'false';
+			favorite.title = 'Add to favorites';
+			favorite.setAttribute('aria-label', 'Add to favorites');
+		}
+	
+		if(!navigator.onLine){
+			offlineFavoriteCounter++;
+			let favoriteId = offlineFavoriteCounter.toString();
+			/* Make sure only one offline label is created no matter how many times user clicks on favorite button */
+			if(!document.querySelector('.offline-favorite-label')){
+				const offlineFavoriteLabel = document.createElement('div');
+				offlineFavoriteLabel.classList.add('offline-favorite-label');
+				offlineFavoriteLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Favorite status will submit when network connection is reestablished`;
+				const restaurantHeader = document.getElementById('restaurant-header');
+				restaurantHeader.parentNode.insertBefore(offlineFavoriteLabel, restaurantHeader);
+			}
+			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
+			restaurant.is_favorite = isFavorite;
+			getFavoriteButtonClass(restaurant, favorite);
+			return;
+		} 
+		DBHelper.updateFavorite(null, restaurantId, isFavorite);
+		restaurant.is_favorite = isFavorite;
+		getFavoriteButtonClass(restaurant, favorite);
+	});
+};
+
 /**
- * Change favorite icon to appear on or off with class change.
+ * Change favorite button to appear on or off with class change.
  */
-const getFavoriteClass = (restaurant, favorite) => {
+const getFavoriteButtonClass = (restaurant, favorite) => {
 	if (restaurant.is_favorite === 'true'){
 		favorite.classList.add('restaurant-favorite-true');
 		favorite.classList.remove('restaurant-favorite-false');
@@ -215,7 +223,7 @@ const createReviewHTML = (review) => {
 	if (!navigator.onLine) {
 		const offlineReviewLabel = document.createElement('div');
 		offlineReviewLabel.classList.add('offline-review-label');
-		offlineReviewLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Will submit review when network connection is reestablished`;
+		offlineReviewLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Review will submit when network connection is reestablished`;
 		li.appendChild(offlineReviewLabel);
 	}
 

@@ -286,7 +286,7 @@ class DBHelper {
 	}
 
 	/**
-   * Updates favorite status of a restaurant when favorite icon is clicked.
+   * Updates favorite status of a restaurant when favorite icon is clicked. If offline, stores favorite status in local storage. If online, updates favorite status on the server and IndexedDB.
    */
 	static updateFavorite(favoriteId, restaurantId, isFavorite){
 		if (!navigator.onLine) {
@@ -327,6 +327,9 @@ class DBHelper {
 		});
 	}
 
+	/**
+   * Adds online event listener to check when network connection is reestablished. When online again, checks to see if local storage contains favorite status data. If so, updates favorite status in server & IndexedDB, then deletes itself from local storage. Offline labels from the favorite icon in UI is also removed.
+   */
 	static updateOfflineFavorites(){
 		window.addEventListener('online', () => {
 			if (localStorage.length > 0){
@@ -337,13 +340,15 @@ class DBHelper {
 						localStorage.removeItem(offlineFavorite.offlineId);
 						console.log('Successfully updated restaurant favorite satus from local storage');
 					} else {
+						console.log('Failed to find offline favorite status in local storage');
 						return;
 					}
 				}
 				const offlineFavoriteLabel = document.querySelector('.offline-favorite-label');
 				offlineFavoriteLabel.parentNode.removeChild(offlineFavoriteLabel);
 			} else {
-				console.log('Failed to find offline favorite status data in local storage');
+				console.log('Local storage is empty');
+				return;
 			}	
 		});
 	}	
@@ -388,7 +393,7 @@ class DBHelper {
 	}
 
 	/**
-   * Listens for network connection and if it occurs and local storage contains offline reviews, retrieve each review and add it to the server and IndexedDB via addReview. Then delete each stored offline review in local storage and remove offline labels from these reviews in UI to indicate to user they have been submitted.
+   * Listens for network connection and if it occurs and local storage contains offline reviews, retrieve each review and add it to the server and IndexedDB via addReview. Then deletes each stored offline review in local storage and removes offline labels from these reviews in UI to indicate to user they have been submitted.
    */
 	static addOfflineReviews(callback){
 		window.addEventListener('online', () => {
@@ -400,6 +405,7 @@ class DBHelper {
 						localStorage.removeItem(offlineReview.offlineId);
 						console.log('Successfully retrieved offline review data & removed from local storage');
 					} else {
+						console.log('Failed to find offline review data in local storage');
 						return;
 					}
 				}
@@ -408,7 +414,8 @@ class DBHelper {
 					offlineReviewLabel.parentNode.removeChild(offlineReviewLabel);
 				});
 			} else {
-				console.log('Failed to find offline review data in local storage');
+				console.log('Local storage is empty');
+				return;
 			}	
 		});
 	}	
