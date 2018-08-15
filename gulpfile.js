@@ -7,12 +7,8 @@ const cleanCSS = require('gulp-clean-css');
 const gzip = require('gulp-gzip');
 const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create();
-//const concat = require('gulp-concat');
-//const browserify = require('browserify');
-//const babelify = require('babelify');
-//const source = require('vinyl-source-stream');
 
-//For live editing
+//For live editing - gulp watch
 gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw'], () => {
 	gulp.watch('./css/**/*.css', ['styles']);
 	gulp.watch('./js/**/*.js', ['lint', 'scripts']);
@@ -32,7 +28,7 @@ gulp.task('watch', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', '
 	});
 });
 
-//For development
+//For development - gulp dev
 gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw'], () => {
 	browserSync.init({
 		server: "./dist",
@@ -41,8 +37,23 @@ gulp.task('dev', ['html', 'images', 'manifest', 'styles', 'lint', 'scripts', 'sw
 	});
 });
 
-//For production
-gulp.task('build', ['html', 'html-compress', 'images', 'manifest', 'styles-build', 'styles-compress', 'lint', 'scripts-build', 'scripts-compress', 'sw-build', 'sw-compress']);
+//For compress - gulp compress
+gulp.task('compress', ['html-compress', 'images', 'manifest', 'styles-compress', 'lint', 'scripts-compress', 'sw-compress'], () => {
+	browserSync.init({
+		server: "./dist",
+		port: 5500,
+		reloadDelay: 1000
+	});
+});
+
+//For production - gulp build
+gulp.task('build', ['html', 'html-compress', 'images', 'manifest', 'styles-build', 'styles-compress', 'lint', 'scripts-build', 'scripts-compress', 'sw-build', 'sw-compress'], () => {
+	browserSync.init({
+		server: "./dist",
+		port: 5500,
+		reloadDelay: 1000
+	});
+});
 
 gulp.task('html', () => {
 	gulp.src('./*.html')
@@ -144,47 +155,3 @@ gulp.task('sw-compress', () => {
 		.pipe(gzip())
 		.pipe(gulp.dest('./dist'));
 });
-
-//Old task runners for Browserify
-/*gulp.task('sw-dev', () => {
-	const b = browserify({
-		debug: false
-	});
-	return b
-		.transform(babelify.configure({presets: ["env"]}))
-		.require('./dist/sw.js', {entry: true})
-		.bundle()
-		.pipe(source('./sw.js'))
-		.pipe(gulp.dest('./dist'));
-});
-
-gulp.task('sw-build', () => {
-	const b = browserify({
-		debug: false
-	});
-	return b
-		.transform(babelify.configure({presets: ["env"], minified: true}))
-		.require('./dist/sw.js', {entry: true})
-		.bundle()
-		.pipe(source('./sw.js'))
-		.pipe(gulp.dest('./dist'));
-});*/
-
-//Old task runners for concat
-/*gulp.task('concat-idb-scripts', () => {
-	gulp.src(['./js/idb.js', './js/dbhelper.js'])
-		.pipe(concat('idb-bundle.js'))
-		.pipe(sourcemaps.init())
-		.pipe(babel())
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('./dist/js'));
-});
-
-gulp.task('concat-idb-scripts-build', () => {
-	gulp.src(['./js/idb.js', './js/dbhelper.js'])
-		.pipe(concat('idb-bundle.js'))
-		.pipe(babel({minified: true}))
-		.pipe(gulp.dest('./dist/js'));
-});*/
-
-

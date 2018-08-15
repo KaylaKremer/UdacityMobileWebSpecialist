@@ -79,7 +79,7 @@ self.addEventListener('fetch', event => {
 						cache.put(fetchRequest, responseToCache);
 					});
 					return response;
-				});
+				});	
 			}
 		})
 	);

@@ -265,7 +265,7 @@ class DBHelper {
 		const map = document.getElementById('map');
 		const mapWidth = map.clientWidth;
 		const mapHeight = map.clientHeight;
-		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${
+		let staticMap = `https://maps.googleapis.com/maps/api/staticmap?center=${
 			loc.lat},${loc.lng}&zoom=12&size=${mapWidth}x${mapHeight}&markers=color:red`;
 		restaurants.forEach(restaurant => {
 			staticMap += `|${restaurant.latlng.lat},${restaurant.latlng.lng}`;
@@ -281,7 +281,7 @@ class DBHelper {
 		const map = document.getElementById('map');
 		const mapWidth = map.clientWidth;
 		const mapHeight = map.clientHeight;
-		let staticMap = `http://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
+		let staticMap = `https://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=16&size=${mapWidth}x${mapHeight}&markers=color:red|${restaurant.latlng.lat},${restaurant.latlng.lng}&key=AIzaSyByOElG6Eai0CEZ27dYL5Vw6NzJOt9FZAc`;
 		return staticMap;
 	}
 

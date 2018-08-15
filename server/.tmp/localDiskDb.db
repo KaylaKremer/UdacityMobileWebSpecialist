@@ -22,8 +22,8 @@
           "Sunday": "12:00 pm - 4:00 pm,</br> 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095563444,
-        "updatedAt": "2018-08-15T04:29:24.017Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-08-15T05:42:53.654Z",
+        "is_favorite": "false",
         "id": 1
       },
       {
@@ -72,8 +72,8 @@
           "Sunday": "11:30 am - 2:00 am"
         },
         "createdAt": 1504095571434,
-        "updatedAt": "2018-08-15T04:29:24.019Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-08-15T05:42:48.724Z",
+        "is_favorite": "false",
         "id": 3
       },
       {
@@ -577,7 +577,7 @@
       "id": 10
     },
     "reviews": {
-      "id": 57
+      "id": 30
     }
   }
 }

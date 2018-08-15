@@ -189,7 +189,7 @@ const createRestaurantHTML = (restaurant) => {
 
 	/* Creates header div to hold name & favorite button. */
 	const header = document.createElement('div');
-	header.id = "header";
+	header.className = "header";
 	li.appendChild(header);
 
 	const name = document.createElement('h3');
@@ -234,7 +234,7 @@ const createRestaurantHTML = (restaurant) => {
 const createFavoriteButton = (restaurant, header) => {
 	const favoriteButton = document.createElement('button');
 	favoriteButton.type = 'button';
-	favoriteButton.id = 'favorite-button';
+	favoriteButton.className = 'favorite-button';
 	const restaurantId = restaurant.id;
 	let isFavorite = restaurant.is_favorite;
 	let noOfflineLabel = true;
