@@ -5,6 +5,7 @@ let restaurants,
 let liveMap = false;
 let initLoad = true;
 let markers = [];
+let offlineFavoriteCounter = 0;
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -184,54 +185,32 @@ const createRestaurantHTML = (restaurant) => {
 	image.setAttribute('data-sizes', 'auto');
 	image.title = `${restaurant.name}`;
 	image.alt = `${restaurant.name} in ${restaurant.neighborhood} - ${restaurant.cuisine_type} restaurant`;
-	li.append(image);
+	li.appendChild(image);
 
 	/* Creates header div to hold name & favorite button. */
 	const header = document.createElement('div');
 	header.id = "header";
-	li.append(header);
+	li.appendChild(header);
 
 	const name = document.createElement('h3');
 	name.innerHTML = restaurant.name;
-	header.append(name);
+	header.appendChild(name);
 
-	/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
-	const favorite = document.createElement('button');
-	favorite.type = 'button';
-	favorite.id = 'favorite-button';
-	favorite.title = 'Add to favorites';
-	favorite.setAttribute('aria-label', 'Add to favorites');
-	getFavoriteClass(restaurant, favorite);
-	favorite.addEventListener('click', () => {
-		let isFavorite;
-		if(restaurant.is_favorite === 'false'){
-			isFavorite = 'true';
-			favorite.title = 'Remove from favorites';
-			favorite.setAttribute('aria-label', 'Remove from favorites');
-		} else {
-			isFavorite = 'false';
-			favorite.title = 'Add to favorites';
-			favorite.setAttribute('aria-label', 'Add to favorites');
-		}
-		const restaurantId = restaurant.id;
-		DBHelper.updateFavorite(restaurantId, isFavorite);
-		restaurant.is_favorite = isFavorite;
-		getFavoriteClass(restaurant, favorite);
-	});
-	header.append(favorite);
+	/* Creates favorite button */
+	createFavoriteButton(restaurant, header);
 
 	const neighborhood = document.createElement('p');
 	neighborhood.innerHTML = restaurant.neighborhood;
-	li.append(neighborhood);
+	li.appendChild(neighborhood);
 
 	const address = document.createElement('p');
 	address.innerHTML = restaurant.address;
-	li.append(address);
+	li.appendChild(address);
 
 	/* Creates empty element so flex grow can be applied and create space to vertically align View Details buttons. */
 	const empty = document.createElement('p');
 	empty.className = 'restaurant-empty';
-	li.append(empty);
+	li.appendChild(empty);
 
 	const more = document.createElement('a');
 	more.innerHTML = 'View Restaurant Details';
@@ -244,23 +223,75 @@ const createRestaurantHTML = (restaurant) => {
 	more.setAttribute('role', 'button');
 	more.setAttribute('tabindex', '0');
 	more.setAttribute('aria-label', 'View' + restaurant.name + 'Restaurant Details');
-	li.append(more);
+	li.appendChild(more);
 
 	return li;
 };
 
 /**
- * Change favorite icon to appear on or off with class change.
+ * Creates a favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates server and IndexedDB with favorite status of the restaurant. If user clicks on favorite button while offline, stores favorite status in local storage and creates an offline label to notify user favorite status will be updated when network connection is reestablished. 
  */
-const getFavoriteClass = (restaurant, favorite) => {
-	if (restaurant.is_favorite === 'true'){
-		favorite.classList.add('index-favorite-true');
-		favorite.classList.remove('index-favorite-false');
-		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+const createFavoriteButton = (restaurant, header) => {
+	const favoriteButton = document.createElement('button');
+	favoriteButton.type = 'button';
+	favoriteButton.id = 'favorite-button';
+	const restaurantId = restaurant.id;
+	let isFavorite = restaurant.is_favorite;
+	let noOfflineLabel = true;
+
+	getFavoriteButtonClass(isFavorite, favoriteButton);
+
+	favoriteButton.addEventListener('click', () => {
+		if(!navigator.onLine){
+			if (isFavorite === 'false'){
+				isFavorite = 'true';
+			} else {
+				isFavorite = 'false';
+			}
+			/* Creates unique id to reference favorite status in local storage. */
+			offlineFavoriteCounter++;
+			let favoriteId = offlineFavoriteCounter.toString();
+			/* Make sure only one offline label is created no matter how many times user clicks on favorite button while offline */
+			if(noOfflineLabel){
+				const offlineFavoriteLabel = document.createElement('div');
+				offlineFavoriteLabel.classList.add('offline-favorite-label');
+				offlineFavoriteLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Favorite status will submit when network connection is reestablished`;
+				header.parentNode.insertBefore(offlineFavoriteLabel, header);
+				noOfflineLabel = false;
+			}
+			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
+			restaurant.is_favorite = isFavorite;
+			getFavoriteButtonClass(isFavorite, favoriteButton);
+			return;
+		}
+		if (isFavorite === 'false'){
+			isFavorite = 'true';
+		} else {
+			isFavorite = 'false';
+		} 
+		DBHelper.updateFavorite(null, restaurantId, isFavorite);
+		restaurant.is_favorite = isFavorite;
+		getFavoriteButtonClass(isFavorite, favoriteButton);
+	});
+	header.appendChild(favoriteButton);
+};
+
+/**
+ * Change favorite button to appear on or off with class change.
+ */
+const getFavoriteButtonClass = (isFavorite, favoriteButton) => {
+	if (isFavorite === 'true'){
+		favoriteButton.title = 'Remove from favorites';
+		favoriteButton.setAttribute('aria-label', 'Remove from favorites');
+		favoriteButton.classList.add('index-favorite-true');
+		favoriteButton.classList.remove('index-favorite-false');
+		favoriteButton.innerHTML = '<i class="fas fa-heart"></i>';
 	} else {
-		favorite.classList.add('index-favorite-false');
-		favorite.classList.remove('index-favorite-true');
-		favorite.innerHTML = '<i class="far fa-heart"></i>';
+		favoriteButton.title = 'Add to favorites';
+		favoriteButton.setAttribute('aria-label', 'Add to favorites');
+		favoriteButton.classList.add('index-favorite-false');
+		favoriteButton.classList.remove('index-favorite-true');
+		favoriteButton.innerHTML = '<i class="far fa-heart"></i>';
 	}
 };
 

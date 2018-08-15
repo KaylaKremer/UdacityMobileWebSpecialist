@@ -116,7 +116,9 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 	DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML);
 };
 
-/* Creates a dynamic favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates IDB with favorite status of the restaurant. */
+/**
+ * Creates a favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates server and IndexedDB with favorite status of the restaurant. If user clicks on favorite button while offline, stores favorite status in local storage and creates an offline label to notify user favorite status will be updated when network connection is reestablished. 
+ */
 const createFavoriteButton = (restaurant) => {
 	const favorite = document.getElementById('favorite-button');
 	getFavoriteButtonClass(restaurant, favorite);
@@ -136,6 +138,7 @@ const createFavoriteButton = (restaurant) => {
 		}
 	
 		if(!navigator.onLine){
+			/* Creates unique id to reference favorite status in local storage. */
 			offlineFavoriteCounter++;
 			let favoriteId = offlineFavoriteCounter.toString();
 			/* Make sure only one offline label is created no matter how many times user clicks on favorite button */

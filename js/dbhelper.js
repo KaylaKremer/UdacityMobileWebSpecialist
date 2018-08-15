@@ -286,7 +286,7 @@ class DBHelper {
 	}
 
 	/**
-   * Updates favorite status of a restaurant when favorite icon is clicked. If offline, stores favorite status in local storage. If online, updates favorite status on the server and IndexedDB.
+   * Updates favorite status of a restaurant when favorite button is clicked. If offline, stores favorite status in local storage. If online, updates favorite status on the server and IndexedDB.
    */
 	static updateFavorite(favoriteId, restaurantId, isFavorite){
 		if (!navigator.onLine) {
@@ -328,7 +328,7 @@ class DBHelper {
 	}
 
 	/**
-   * Adds online event listener to check when network connection is reestablished. When online again, checks to see if local storage contains favorite status data. If so, updates favorite status in server & IndexedDB, then deletes itself from local storage. Offline labels from the favorite icon in UI is also removed.
+   * Adds online event listener to check when network connection is reestablished. When online again, checks to see if local storage contains favorite status data. If so, updates favorite status in server & IndexedDB, then deletes itself from local storage. Offline labels from the favorite button in UI is also removed.
    */
 	static updateOfflineFavorites(){
 		window.addEventListener('online', () => {
