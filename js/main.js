@@ -239,7 +239,7 @@ const createFavoriteButton = (restaurant, header) => {
 	let isFavorite = restaurant.is_favorite;
 	let noOfflineLabel = true;
 
-	getFavoriteButtonClass(isFavorite, favoriteButton);
+	changeFavoriteButton(isFavorite, favoriteButton);
 
 	favoriteButton.addEventListener('click', () => {
 		if(!navigator.onLine){
@@ -261,7 +261,7 @@ const createFavoriteButton = (restaurant, header) => {
 			}
 			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
 			restaurant.is_favorite = isFavorite;
-			getFavoriteButtonClass(isFavorite, favoriteButton);
+			changeFavoriteButton(isFavorite, favoriteButton);
 			return;
 		}
 		if (isFavorite === 'false'){
@@ -271,7 +271,7 @@ const createFavoriteButton = (restaurant, header) => {
 		} 
 		DBHelper.updateFavorite(null, restaurantId, isFavorite);
 		restaurant.is_favorite = isFavorite;
-		getFavoriteButtonClass(isFavorite, favoriteButton);
+		changeFavoriteButton(isFavorite, favoriteButton);
 	});
 	header.appendChild(favoriteButton);
 };
@@ -279,7 +279,7 @@ const createFavoriteButton = (restaurant, header) => {
 /**
  * Change favorite button to appear on or off with class change.
  */
-const getFavoriteButtonClass = (isFavorite, favoriteButton) => {
+const changeFavoriteButton = (isFavorite, favoriteButton) => {
 	if (isFavorite === 'true'){
 		favoriteButton.title = 'Remove from favorites';
 		favoriteButton.setAttribute('aria-label', 'Remove from favorites');

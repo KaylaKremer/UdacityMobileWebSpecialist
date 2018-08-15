@@ -22,8 +22,8 @@
           "Sunday": "12:00 pm - 4:00 pm,</br> 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095563444,
-        "updatedAt": "2018-08-15T03:13:17.736Z",
-        "is_favorite": "false",
+        "updatedAt": "2018-08-15T04:29:24.017Z",
+        "is_favorite": "true",
         "id": 1
       },
       {
@@ -47,7 +47,7 @@
           "Sunday": "12:00 pm - 3:00 pm,</br> 5:00 pm - 11:00 pm"
         },
         "createdAt": 1504095568414,
-        "updatedAt": "2018-08-15T03:13:54.774Z",
+        "updatedAt": "2018-08-15T04:32:33.106Z",
         "is_favorite": "false",
         "id": 2
       },
@@ -72,8 +72,8 @@
           "Sunday": "11:30 am - 2:00 am"
         },
         "createdAt": 1504095571434,
-        "updatedAt": "2018-08-15T02:51:42.661Z",
-        "is_favorite": "false",
+        "updatedAt": "2018-08-15T04:29:24.019Z",
+        "is_favorite": "true",
         "id": 3
       },
       {

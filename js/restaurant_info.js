@@ -120,58 +120,65 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
  * Creates a favorite button. When clicked, notifies user that restaurant favorite has been added or removed via visual cues and ARIA label changes. Also updates server and IndexedDB with favorite status of the restaurant. If user clicks on favorite button while offline, stores favorite status in local storage and creates an offline label to notify user favorite status will be updated when network connection is reestablished. 
  */
 const createFavoriteButton = (restaurant) => {
-	const favorite = document.getElementById('favorite-button');
-	getFavoriteButtonClass(restaurant, favorite);
+	const favoriteButton = document.getElementById('favorite-button');
+	const restaurantId = restaurant.id;
+	let isFavorite = restaurant.is_favorite;
+	let noOfflineLabel = true;
 
-	favorite.addEventListener('click', () => {
-		const restaurantId = restaurant.id;
-		let isFavorite;
+	changeFavoriteButton(isFavorite, favoriteButton);
 
-		if(restaurant.is_favorite === 'false'){
-			isFavorite = 'true';
-			favorite.title = 'Remove from favorites';
-			favorite.setAttribute('aria-label', 'Remove from favorites');
-		} else {
-			isFavorite = 'false';
-			favorite.title = 'Add to favorites';
-			favorite.setAttribute('aria-label', 'Add to favorites');
-		}
-	
+	favoriteButton.addEventListener('click', () => {
 		if(!navigator.onLine){
+			if (isFavorite === 'false'){
+				isFavorite = 'true';
+			} else {
+				isFavorite = 'false';
+			}
 			/* Creates unique id to reference favorite status in local storage. */
 			offlineFavoriteCounter++;
 			let favoriteId = offlineFavoriteCounter.toString();
 			/* Make sure only one offline label is created no matter how many times user clicks on favorite button */
-			if(!document.querySelector('.offline-favorite-label')){
+			if(noOfflineLabel){
 				const offlineFavoriteLabel = document.createElement('div');
 				offlineFavoriteLabel.classList.add('offline-favorite-label');
 				offlineFavoriteLabel.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Offline Mode - Favorite status will submit when network connection is reestablished`;
 				const restaurantHeader = document.getElementById('restaurant-header');
 				restaurantHeader.parentNode.insertBefore(offlineFavoriteLabel, restaurantHeader);
+				noOfflineLabel = false;
 			}
 			DBHelper.updateFavorite(favoriteId, restaurantId, isFavorite);
 			restaurant.is_favorite = isFavorite;
-			getFavoriteButtonClass(restaurant, favorite);
+			changeFavoriteButton(isFavorite, favoriteButton);
 			return;
-		} 
+		}
+
+		if (isFavorite === 'false'){
+			isFavorite = 'true';
+		} else {
+			isFavorite = 'false';
+		}  
 		DBHelper.updateFavorite(null, restaurantId, isFavorite);
 		restaurant.is_favorite = isFavorite;
-		getFavoriteButtonClass(restaurant, favorite);
+		changeFavoriteButton(isFavorite, favoriteButton);
 	});
 };
 
 /**
  * Change favorite button to appear on or off with class change.
  */
-const getFavoriteButtonClass = (restaurant, favorite) => {
-	if (restaurant.is_favorite === 'true'){
-		favorite.classList.add('restaurant-favorite-true');
-		favorite.classList.remove('restaurant-favorite-false');
-		favorite.innerHTML = '<i class="fas fa-heart"></i>';
+const changeFavoriteButton = (isFavorite, favoriteButton) => {
+	if (isFavorite === 'true'){
+		favoriteButton.title = 'Remove from favorites';
+		favoriteButton.setAttribute('aria-label', 'Remove from favorites');
+		favoriteButton.classList.add('restaurant-favorite-true');
+		favoriteButton.classList.remove('restaurant-favorite-false');
+		favoriteButton.innerHTML = '<i class="fas fa-heart"></i>';
 	} else {
-		favorite.classList.add('restaurant-favorite-false');
-		favorite.classList.remove('restaurant-favorite-true');
-		favorite.innerHTML = '<i class="far fa-heart"></i>';
+		favoriteButton.title = 'Add to favorites';
+		favoriteButton.setAttribute('aria-label', 'Add to favorites');
+		favoriteButton.classList.add('restaurant-favorite-false');
+		favoriteButton.classList.remove('restaurant-favorite-true');
+		favoriteButton.innerHTML = '<i class="far fa-heart"></i>';
 	}
 };
 
