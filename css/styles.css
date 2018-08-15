@@ -560,7 +560,7 @@ nav h1 a:hover {
   box-shadow: 0 0 1px 3px rgb(32,123,188);
   border-radius: 2px;
 }
-#header {
+.header {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
