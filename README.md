@@ -11,10 +11,10 @@ This is my completed project for Udacity's Mobile Web Specialist Nanodegree cert
 * Lighthouse audit scores of >90
 
 ### :fork_and_knife: Server
-First you will need to run the server. Navigate to the 'UdacityMobileWebSpecialist/server' directory in your terminal and then run the command 'node server' to start the Sails server on port 1337. For more information, visit the server's repo for this project [HERE](https://github.com/udacity/mws-restaurant-stage-3)
+First you will need to run the server. Navigate to the `UdacityMobileWebSpecialist/server` directory in your terminal and then run the command 'node server' to start the Sails server on port `1337`. For more information, visit the server's repo for this project [HERE](https://github.com/udacity/mws-restaurant-stage-3)
 
 ### :fork_and_knife: Deployment
-To deploy the app in your browser, navigate to the 'UdacityMobileWebSpecialist' directory in your terminal and then run the command 'gulp build'. This will generate a production build of the project and use BrowserSync to deploy it in your browser on port 5500. 
+To deploy the app in your browser, navigate to the `UdacityMobileWebSpecialist` directory in your terminal and then run the command `gulp build`. This will generate a production build of the project and use BrowserSync to deploy it in your browser on port `5500`. 
 
 ### :fork_and_knife: Notes
 I have changed Google maps to be static images when pages first load. You can change it back to a live map by clicking on it! All images are also set to lazy load to further help with page load performance. 
